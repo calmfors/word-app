@@ -304,6 +304,10 @@ button.speaker:hover {
     padding: 80px 20px;
   }
 
+  .main {
+    gap: 20px;
+  }
+
   .main h1 {
     font-size: 32px;
     margin-bottom: 10px;
@@ -337,9 +341,8 @@ button.speaker:hover {
     padding: 0;
   }
 
-  .main ul.wordList {
-    padding-left: 20px;
-    width: 100%;
+  .main ul {
+    padding: 20px 0 20px 40px;
   }
 
   .newWords {
