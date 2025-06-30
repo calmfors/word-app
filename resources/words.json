@@ -1,0 +1,537 @@
+[
+  {
+    "english": "happy",
+    "swedish": "glad",
+    "category": "everyday words"
+  },
+  {
+    "english": "sad",
+    "swedish": "ledsen",
+    "category": "everyday words"
+  },
+  {
+    "english": "big",
+    "swedish": "stor",
+    "category": "everyday words"
+  },
+  {
+    "english": "small",
+    "swedish": "liten",
+    "category": "everyday words"
+  },
+  {
+    "english": "fast",
+    "swedish": "snabb",
+    "category": "everyday words"
+  },
+  {
+    "english": "slow",
+    "swedish": "långsam",
+    "category": "everyday words"
+  },
+  {
+    "english": "hot",
+    "swedish": "varm",
+    "category": "everyday words"
+  },
+  {
+    "english": "cold",
+    "swedish": "kall",
+    "category": "everyday words"
+  },
+  {
+    "english": "clean",
+    "swedish": "ren",
+    "category": "everyday words"
+  },
+  {
+    "english": "dirty",
+    "swedish": "smutsig",
+    "category": "everyday words"
+  },
+  {
+    "english": "red",
+    "swedish": "röd",
+    "category": "colors"
+  },
+  {
+    "english": "blue",
+    "swedish": "blå",
+    "category": "colors"
+  },
+  {
+    "english": "yellow",
+    "swedish": "gul",
+    "category": "colors"
+  },
+  {
+    "english": "green",
+    "swedish": "grön",
+    "category": "colors"
+  },
+  {
+    "english": "orange",
+    "swedish": "orange",
+    "category": "colors"
+  },
+  {
+    "english": "purple",
+    "swedish": "lila",
+    "category": "colors"
+  },
+  {
+    "english": "pink",
+    "swedish": "rosa",
+    "category": "colors"
+  },
+  {
+    "english": "black",
+    "swedish": "svart",
+    "category": "colors"
+  },
+  {
+    "english": "white",
+    "swedish": "vit",
+    "category": "colors"
+  },
+  {
+    "english": "brown",
+    "swedish": "brun",
+    "category": "colors"
+  },
+  {
+    "english": "one",
+    "swedish": "ett",
+    "category": "numbers"
+  },
+  {
+    "english": "two",
+    "swedish": "två",
+    "category": "numbers"
+  },
+  {
+    "english": "three",
+    "swedish": "tre",
+    "category": "numbers"
+  },
+  {
+    "english": "four",
+    "swedish": "fyra",
+    "category": "numbers"
+  },
+  {
+    "english": "five",
+    "swedish": "fem",
+    "category": "numbers"
+  },
+  {
+    "english": "six",
+    "swedish": "sex",
+    "category": "numbers"
+  },
+  {
+    "english": "seven",
+    "swedish": "sju",
+    "category": "numbers"
+  },
+  {
+    "english": "eight",
+    "swedish": "åtta",
+    "category": "numbers"
+  },
+  {
+    "english": "nine",
+    "swedish": "nio",
+    "category": "numbers"
+  },
+  {
+    "english": "ten",
+    "swedish": "tio",
+    "category": "numbers"
+  },
+  {
+    "english": "dog",
+    "swedish": "hund",
+    "category": "animals"
+  },
+  {
+    "english": "cat",
+    "swedish": "katt",
+    "category": "animals"
+  },
+  {
+    "english": "bird",
+    "swedish": "fågel",
+    "category": "animals"
+  },
+  {
+    "english": "fish",
+    "swedish": "fisk",
+    "category": "animals"
+  },
+  {
+    "english": "cow",
+    "swedish": "ko",
+    "category": "animals"
+  },
+  {
+    "english": "horse",
+    "swedish": "häst",
+    "category": "animals"
+  },
+  {
+    "english": "lion",
+    "swedish": "lejon",
+    "category": "animals"
+  },
+  {
+    "english": "tiger",
+    "swedish": "tiger",
+    "category": "animals"
+  },
+  {
+    "english": "elephant",
+    "swedish": "elefant",
+    "category": "animals"
+  },
+  {
+    "english": "rabbit",
+    "swedish": "kanin",
+    "category": "animals"
+  },
+  {
+    "english": "hand",
+    "swedish": "hand",
+    "category": "body parts"
+  },
+  {
+    "english": "leg",
+    "swedish": "ben",
+    "category": "body parts"
+  },
+  {
+    "english": "head",
+    "swedish": "huvud",
+    "category": "body parts"
+  },
+  {
+    "english": "nose",
+    "swedish": "näsa",
+    "category": "body parts"
+  },
+  {
+    "english": "ear",
+    "swedish": "öra",
+    "category": "body parts"
+  },
+  {
+    "english": "eye",
+    "swedish": "öga",
+    "category": "body parts"
+  },
+  {
+    "english": "mouth",
+    "swedish": "mun",
+    "category": "body parts"
+  },
+  {
+    "english": "arm",
+    "swedish": "arm",
+    "category": "body parts"
+  },
+  {
+    "english": "foot",
+    "swedish": "fot",
+    "category": "body parts"
+  },
+  {
+    "english": "hair",
+    "swedish": "hår",
+    "category": "body parts"
+  },
+  {
+    "english": "apple",
+    "swedish": "äpple",
+    "category": "food"
+  },
+  {
+    "english": "banana",
+    "swedish": "banan",
+    "category": "food"
+  },
+  {
+    "english": "milk",
+    "swedish": "mjölk",
+    "category": "food"
+  },
+  {
+    "english": "bread",
+    "swedish": "bröd",
+    "category": "food"
+  },
+  {
+    "english": "rice",
+    "swedish": "ris",
+    "category": "food"
+  },
+  {
+    "english": "cake",
+    "swedish": "kaka",
+    "category": "food"
+  },
+  {
+    "english": "pizza",
+    "swedish": "pizza",
+    "category": "food"
+  },
+  {
+    "english": "water",
+    "swedish": "vatten",
+    "category": "food"
+  },
+  {
+    "english": "juice",
+    "swedish": "juice",
+    "category": "food"
+  },
+  {
+    "english": "candy",
+    "swedish": "godis",
+    "category": "food"
+  },
+  {
+    "english": "mother",
+    "swedish": "mamma",
+    "category": "family"
+  },
+  {
+    "english": "father",
+    "swedish": "pappa",
+    "category": "family"
+  },
+  {
+    "english": "brother",
+    "swedish": "bror",
+    "category": "family"
+  },
+  {
+    "english": "sister",
+    "swedish": "syster",
+    "category": "family"
+  },
+  {
+    "english": "grandmother",
+    "swedish": "mormor/farmor",
+    "category": "family"
+  },
+  {
+    "english": "grandfather",
+    "swedish": "morfar/farfar",
+    "category": "family"
+  },
+  {
+    "english": "aunt",
+    "swedish": "moster/faster",
+    "category": "family"
+  },
+  {
+    "english": "uncle",
+    "swedish": "morbror/farbror",
+    "category": "family"
+  },
+  {
+    "english": "cousin",
+    "swedish": "kusin",
+    "category": "family"
+  },
+  {
+    "english": "baby",
+    "swedish": "bebis",
+    "category": "family"
+  },
+  {
+    "english": "sun",
+    "swedish": "sol",
+    "category": "nature"
+  },
+  {
+    "english": "moon",
+    "swedish": "måne",
+    "category": "nature"
+  },
+  {
+    "english": "star",
+    "swedish": "stjärna",
+    "category": "nature"
+  },
+  {
+    "english": "cloud",
+    "swedish": "moln",
+    "category": "nature"
+  },
+  {
+    "english": "rain",
+    "swedish": "regn",
+    "category": "nature"
+  },
+  {
+    "english": "tree",
+    "swedish": "träd",
+    "category": "nature"
+  },
+  {
+    "english": "flower",
+    "swedish": "blomma",
+    "category": "nature"
+  },
+  {
+    "english": "leaf",
+    "swedish": "löv",
+    "category": "nature"
+  },
+  {
+    "english": "rock",
+    "swedish": "sten",
+    "category": "nature"
+  },
+  {
+    "english": "river",
+    "swedish": "flod",
+    "category": "nature"
+  },
+  {
+    "english": "walk",
+    "swedish": "gå",
+    "category": "actions"
+  },
+  {
+    "english": "run",
+    "swedish": "springa",
+    "category": "actions"
+  },
+  {
+    "english": "jump",
+    "swedish": "hoppa",
+    "category": "actions"
+  },
+  {
+    "english": "eat",
+    "swedish": "äta",
+    "category": "actions"
+  },
+  {
+    "english": "drink",
+    "swedish": "dricka",
+    "category": "actions"
+  },
+  {
+    "english": "sleep",
+    "swedish": "sova",
+    "category": "actions"
+  },
+  {
+    "english": "read",
+    "swedish": "läsa",
+    "category": "actions"
+  },
+  {
+    "english": "write",
+    "swedish": "skriva",
+    "category": "actions"
+  },
+  {
+    "english": "play",
+    "swedish": "leka",
+    "category": "actions"
+  },
+  {
+    "english": "dance",
+    "swedish": "dansa",
+    "category": "actions"
+  },
+  {
+    "english": "chair",
+    "swedish": "stol",
+    "category": "objects"
+  },
+  {
+    "english": "table",
+    "swedish": "bord",
+    "category": "objects"
+  },
+  {
+    "english": "book",
+    "swedish": "bok",
+    "category": "objects"
+  },
+  {
+    "english": "pen",
+    "swedish": "penna",
+    "category": "objects"
+  },
+  {
+    "english": "bag",
+    "swedish": "väska",
+    "category": "objects"
+  },
+  {
+    "english": "ball",
+    "swedish": "boll",
+    "category": "objects"
+  },
+  {
+    "english": "car",
+    "swedish": "bil",
+    "category": "objects"
+  },
+  {
+    "english": "bike",
+    "swedish": "cykel",
+    "category": "objects"
+  },
+  {
+    "english": "door",
+    "swedish": "dörr",
+    "category": "objects"
+  },
+  {
+    "english": "window",
+    "swedish": "fönster",
+    "category": "objects"
+  },
+  {
+    "english": "school",
+    "swedish": "skola",
+    "category": "places"
+  },
+  {
+    "english": "home",
+    "swedish": "hem",
+    "category": "places"
+  },
+  {
+    "english": "park",
+    "swedish": "park",
+    "category": "places"
+  },
+  {
+    "english": "store",
+    "swedish": "affär",
+    "category": "places"
+  },
+  {
+    "english": "restaurant",
+    "swedish": "restaurang",
+    "category": "places"
+  },
+  {
+    "english": "hospital",
+    "swedish": "sjukhus",
+    "category": "places"
+  },
+  {
+    "english": "library",
+    "swedish": "bibliotek",
+    "category": "places"
+  }
+]
