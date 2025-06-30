@@ -8,3 +8,45 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+@keyframes blink-green {
+
+  0%,
+  100% {
+    background-color: inherit;
+  }
+
+  20%,
+  80% {
+    background-color: #aaffaa;
+  }
+
+  50% {
+    background-color: #44ff44;
+  }
+}
+
+@keyframes blink-red {
+
+  0%,
+  100% {
+    background-color: inherit;
+  }
+
+  20%,
+  80% {
+    background-color: #ffaaaa;
+  }
+
+  50% {
+    background-color: #ff4444;
+  }
+}
+
+body.blink-green {
+  animation: blink-green 0.2s;
+}
+
+body.blink-red {
+  animation: blink-red 0.2s;
+}

@@ -14,65 +14,31 @@ export default function TestWords() {
   const [numberOfCorrectAnswers, setNumberOfCorrectAnswers] = useState(0);
   const [numberOfWrongAnswers, setNumberOfWrongAnswers] = useState(0);
   const [help, setHelp] = useState(false);
-  const textToSpeech = useTextToSpeech();
   const [fromLang, setFromLang] = useState('sv-SE');
   const [toLang, setToLang] = useState('en-US');
-  const wordsFromLocalStorage = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('newWords')) : null;
-  const [status, setStatus] = useState('idle');
+  const [status, setStatus] = useState('loading');
   const [soundOn, setSoundOn] = useState(true);
-
-  const wordList = words
+  const textToSpeech = useTextToSpeech();
+  const wordList = words;
 
   useEffect(() => {
-    console.log('wordsFromLocalStorage', wordsFromLocalStorage);
     async function fetchData() {
+      setStatus('loading');
       const data = await getData();
       wordList.push(...data.documents);
-      if (wordsFromLocalStorage) {
-        const uniqueWords = wordsFromLocalStorage.filter((word) => {
-          return !wordList.some((w) => w.english === word.english && w.swedish === word.swedish);
-        });
-        wordList.push(...uniqueWords);
-      }
+      const uniqueWords = Array.from(new Set(wordList.map(word => JSON.stringify(word)))).map(word => JSON.parse(word));
+      wordList.length = 0; 
+      wordList.push(...uniqueWords);
     }
     fetchData();
-  }, []);
-
-  const getRandomWords = () => {
-    setCorrectAnswer(null);
-    const numberOfWords = wordList.length;
-    const uniqueIndexes = new Set();
-    while (uniqueIndexes.size < 4) {
-      uniqueIndexes.add(Math.floor(Math.random() * numberOfWords));
-    }
-    const selectedWords = Array.from(uniqueIndexes).map((i) => wordList[i]);
-    const answerIndex = Math.floor(Math.random() * 4);
-    selectedWords.forEach((word, index) => {
-      word = { ...word, disabled: false };
-    });
-    setRandomWords(selectedWords);
-    setCorrectIndex(answerIndex);
-    setAnimationKey((k) => k + 1);
-  };
-
-  useEffect(() => {
     getRandomWords();
   }, []);
 
   useEffect(() => {
-    if (fromLang === 'en-US') {
-      setToLang('sv-SE');
-    } else {
-      setToLang('en-US');
-    }
+    if (fromLang === 'en-US') setToLang('sv-SE');
+    else setToLang('en-US');
     resetGame();
   }, [fromLang]);
-
-  const resetGame = () => {
-    setNumberOfCorrectAnswers(0);
-    setNumberOfWrongAnswers(0);
-    getRandomWords();
-  }
 
   useEffect(() => {
     if (help) {
@@ -96,12 +62,44 @@ export default function TestWords() {
     }
   }, [help]);
 
+  const resetGame = () => {
+    setNumberOfCorrectAnswers(0);
+    setNumberOfWrongAnswers(0);
+    getRandomWords();
+  }
+
+  const getRandomWords = () => {
+    setCorrectAnswer(null);
+    const numberOfWords = wordList.length;
+    const uniqueIndexes = new Set();
+    while (uniqueIndexes.size < 4) {
+      uniqueIndexes.add(Math.floor(Math.random() * numberOfWords));
+    }
+    const selectedWords = Array.from(uniqueIndexes).map((i) => wordList[i]);
+    const answerIndex = Math.floor(Math.random() * 4);
+    selectedWords.forEach((word, index) => {
+      word = { ...word, disabled: false };
+    });
+    setRandomWords(selectedWords);
+    setCorrectIndex(answerIndex);
+    setAnimationKey((k) => k + 1);
+    setStatus('loaded');
+  };
+
   const handleClick = (event) => {
     const selectedWord = event.target.textContent;
     const correctAnswer = fromLang === 'en-US' ? randomWords[correctIndex]?.swedish : randomWords[correctIndex]?.english;
     if (soundOn) {
       textToSpeech(randomWords[correctIndex][fromLang === 'en-US' ? 'english' : 'swedish'], fromLang);
-      textToSpeech(event.target.dataset.word, toLang);
+      setTimeout(() => {
+        textToSpeech(selectedWord, toLang);
+      }, 500);
+    }
+    if (selectedWord === correctAnswer) {
+      document.body.classList.toggle('blink-green');
+    }
+    else {
+      document.body.classList.toggle('blink-red');
     }
     setTimeout(() => {
       if (selectedWord === correctAnswer) {
@@ -110,6 +108,7 @@ export default function TestWords() {
         setCorrectAnswer(true);
         setTimeout(() => {
           getRandomWords();
+          document.body.classList.toggle('blink-green');
         }, 1500);
       } else {
         //if (soundOn) textToSpeech('Fel!', 'sv-SE')
@@ -117,12 +116,19 @@ export default function TestWords() {
         setCorrectAnswer(false);
         setTimeout(() => {
           setCorrectAnswer(null);
+          document.body.classList.toggle('blink-red');
         }, 1500);
       }
     }, soundOn ? 500 : 0);
   };
 
-  if (randomWords.length < 4) return null;
+  if (status === 'loading') return (
+    <div className={styles.page}>
+      <main className={styles.main}>
+        <h1 className={styles.title}>Laddar ord...</h1>
+      </main>
+    </div>
+  );
 
   return (
     <div className={styles.page}>

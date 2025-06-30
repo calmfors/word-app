@@ -19,7 +19,7 @@ export default function AddWords() {
     const word = formData.get("word");
     const meaning = formData.get("meaning");
     if (word && meaning) {
-      setNewWords(prev => [...prev, { english: word, swedish: meaning }]);
+      setNewWords(prev => [...prev, { english: word.trim().toLowerCase().replaceAll('.', ''), swedish: meaning.trim().toLowerCase().replaceAll('.', '') }]);
       event.target.reset();
       inputRef.current.focus();
     } else {
@@ -72,7 +72,7 @@ export default function AddWords() {
         <form onSubmit={submitWords}>
           <label>
             Engelskt ord:
-            <input ref={inputRef} type="text" name="word" autoComplete="off" />
+            <input ref={inputRef} type="text" name="word" autoComplete="off" autoCapitalize="off" autoCorrect="off" />
           </label>
           <label>
             Svenskt ord:
