@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width:100vw;
+  width: 100vw;
   padding: 80px 10px;
   gap: 60px;
   font-family: var(--font-geist-sans);
@@ -15,6 +15,7 @@
   gap: 30px;
   grid-row-start: 2;
   align-items: center;
+  width: 100%;
 }
 
 .main h1 {
@@ -25,10 +26,11 @@
   animation: slideInFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
   opacity: 0;
   text-align: center;
-  margin-bottom:20px
+  margin-bottom: 20px
 }
 
-.main a, .main button {
+.main a,
+.main button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,6 +47,7 @@
   animation: slideInFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
   opacity: 0;
 }
+
 .main a {
   animation-delay: 0.2s;
 }
@@ -100,7 +103,7 @@
   color: #2e9b24;
 }
 
-.main ul.wordList {
+.main ul {
   list-style: none;
   padding: 30px 0 30px 40px;
   margin: 0;
@@ -110,26 +113,26 @@
   gap: 20px;
 }
 
-.main ul.wordList li {
+.main ul li {
   display: flex;
   align-items: center;
   animation: slideInFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
   opacity: 0;
 }
 
-.main ul.wordList li:nth-child(1) {
+.main ul li:nth-child(1) {
   animation-delay: 2s;
 }
 
-.main ul.wordList li:nth-child(2) {
+.main ul li:nth-child(2) {
   animation-delay: 2.2s;
 }
 
-.main ul.wordList li:nth-child(3) {
+.main ul li:nth-child(3) {
   animation-delay: 2.4s;
 }
 
-.main ul.wordList li:nth-child(4) {
+.main ul li:nth-child(4) {
   animation-delay: 2.6s;
 }
 
@@ -170,7 +173,7 @@ p.incorrect {
   animation: slideInFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
   animation-delay: 0;
   position: absolute;
-  top:60px;
+  top: 60px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -181,28 +184,34 @@ p.incorrect {
   z-index: 10;
   padding-bottom: 80px;
 }
+
 p.correct {
   color: #2e9b24;
 }
+
 p.incorrect {
   color: #d9304c;
 }
+
 .buttons {
   display: flex;
   gap: 10px;
   animation: slideInFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
   opacity: 0;
 }
+
 button.grey {
   font-size: 24px;
   line-height: 1;
-  padding:0;
-  background-color:transparent;
+  padding: 0;
+  background-color: transparent;
   color: #666;
 }
+
 button.grey:hover {
   background-color: transparent;
 }
+
 .main button:disabled {
   pointer-events: none;
   background-color: #ccc;
@@ -243,35 +252,41 @@ button.speaker:hover {
   line-height: 1;
   animation: slideInFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
+
 .newWords {
   border: 2px solid #1b8eab;
-  padding:40px 20px 80px;
-  width:100%;
+  padding: 40px 20px 80px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
   position: relative;
-  margin-top:20px;
+  margin-top: 20px;
   border-radius: 10px;
 }
+
 .main ul.newWordsList {
-  padding:0;
+  padding: 0;
 }
+
 .main ul.newWordsList li {
-  animation-delay:0s !important;
+  animation-delay: 0s !important;
 }
+
 .main p span.remove {
-  color:red;
+  color: red;
   font-weight: 400;
   cursor: pointer;
-  padding:5px;
+  padding: 5px;
 }
+
 .main button.savebutton {
   background-color: #1b8eab;
   position: absolute;
   bottom: -36px;
 }
+
 @keyframes slideInFromLeft {
   from {
     transform: translateX(-150%);
@@ -281,5 +296,53 @@ button.speaker:hover {
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 80px 20px;
+  }
+
+  .main h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  .main a,
+  .main button:not(.speaker):not(.grey) {
+    font-size: 24px;
+    padding: 15px 30px;
+  }
+
+  .main p {
+    font-size: 22px;
+  }
+
+  .main form {
+    width: 100%;
+  }
+
+  .main form input {
+    font-size: 32px;
+    padding: 16px 12px;
+  }
+
+  .main form button {
+    margin-top: 12px;
+  }
+
+  button.grey {
+    font-size: 18px;
+    padding: 0;
+  }
+
+  .main ul.wordList {
+    padding-left: 20px;
+    width: 100%;
+  }
+
+  .newWords {
+    padding: 20px 20px 40px;
   }
 }

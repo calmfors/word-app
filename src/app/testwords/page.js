@@ -132,7 +132,7 @@ export default function TestWords() {
         <p key={animationKey + 1}>
           Vad är <span className={styles.word} onClick={() => soundOn && textToSpeech(randomWords[correctIndex][fromLang === 'en-US' ? 'english' : 'swedish'], fromLang)}>{randomWords[correctIndex][fromLang === 'en-US' ? 'english' : 'swedish']}</span> på {fromLang === 'en-US' ? 'svenska' : 'engelska'}?
         </p>
-        <ul key={animationKey} className={soundOn ? styles.wordList : [styles.wordList, styles.wordListNoSound].join(' ')}>
+        <ul key={animationKey} className={soundOn ? '' : styles.wordListNoSound}>
           {randomWords.map((word, index) => (
             <li key={toLang === 'en-US' ? word.english : word.swedish}>
               <button disabled={word.disabled} data-word={word[toLang === 'en-US' ? 'english' : 'swedish']} onClick={handleClick}>{toLang === 'en-US' ? word.english : word.swedish}</button>
