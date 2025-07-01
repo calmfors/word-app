@@ -214,6 +214,10 @@ button.grey:hover {
 
 .main button:disabled {
   pointer-events: none;
+}
+
+.main button:disabled,
+.main .notSelected {
   background-color: #ccc;
 }
 
@@ -257,7 +261,7 @@ button.speaker:hover {
   border: 2px solid #1b8eab;
   padding: 40px 20px 80px;
   width: 100%;
-  max-width:600px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -288,6 +292,37 @@ button.speaker:hover {
   bottom: -36px;
 }
 
+.main .problem {
+  display: flex;
+  align-items: center;
+}
+
+.main .problem input {
+  font-size: 32px;
+  line-height: 1.6;
+  margin-left: 10px;
+  padding: 10px;
+  width:72px;
+  border:none;
+  background-color: rgba(27, 142, 171, 0.1);
+  color: #1b8eab;
+  text-align: center;
+}
+
+.main .problem input:focus-visible {
+  outline: none;
+}
+
+.main .problem input:focus::placeholder {
+  color: transparent;
+}
+.main button.checkmark {
+  background-color: transparent;
+  padding:0;
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+}
 @keyframes slideInFromLeft {
   from {
     transform: translateX(-150%);
@@ -303,11 +338,11 @@ button.speaker:hover {
 
 @media (max-width: 768px) {
   .page {
-    padding: 80px 20px;
+    padding: 70px 20px;
   }
 
   .main {
-    gap: 20px;
+    gap: 15px;
   }
 
   .main h1 {
@@ -316,14 +351,18 @@ button.speaker:hover {
   }
 
   .main a,
-  .main button:not(.speaker):not(.grey) {
+  .main button:not(.speaker):not(.grey):not(.checkmark) {
     font-size: 24px;
     padding: 15px 30px;
   }
 
-  .main p {
+  .main p:not(.problem p) {
     font-size: 22px;
     line-height: 1.8;
+  }
+
+  .problem {
+    margin: 20px 0;
   }
 
   .main p .word {
@@ -357,10 +396,15 @@ button.speaker:hover {
     padding: 10px 0 20px 40px;
   }
 
-  p.correct,
-  p.incorrect {
-    font-size: 64px;
-    line-height: 1;
+  .main p.correct,
+  .main p.incorrect {
+    font-size: 64px !important;
+    line-height: 1 !important;
+  }
+
+  .backButton {
+    width: 30px;
+    height: 30px;
   }
 
   .newWords {

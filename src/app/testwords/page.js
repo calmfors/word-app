@@ -95,10 +95,7 @@ export default function TestWords() {
         textToSpeech(selectedWord, toLang);
       }, 500);
     }
-    if (selectedWord === correctAnswer) {
-      document.body.classList.toggle('blink-green');
-    }
-    else {
+    if (selectedWord != correctAnswer) {
       document.body.classList.toggle('blink-red');
     }
     setTimeout(() => {
@@ -108,7 +105,6 @@ export default function TestWords() {
         setCorrectAnswer(true);
         setTimeout(() => {
           getRandomWords();
-          document.body.classList.toggle('blink-green');
         }, 1500);
       } else {
         //if (soundOn) textToSpeech('Fel!', 'sv-SE')
