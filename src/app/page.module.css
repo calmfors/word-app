@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  padding: 80px 10px;
+  padding: 80px 10px 0 10px;
   gap: 60px;
   font-family: var(--font-geist-sans);
   position: relative;
@@ -52,8 +52,19 @@
   animation-delay: 0.2s;
 }
 
-.main a:last-child {
-  animation-delay: .4s;
+.main a:nth-child(3),
+.main button:nth-child(3) {
+  animation-delay: .3s;
+}
+
+.main a:nth-child(4),
+.main button:nth-child(4) {
+  animation-delay: .6s;
+}
+
+.main a:nth-child(5),
+.main button:nth-child(5) {
+  animation-delay: .9s;
 }
 
 .main a:hover,
@@ -295,6 +306,7 @@ button.speaker:hover {
 .main .problem {
   display: flex;
   align-items: center;
+  animation: slideInFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
 .main .problem input {
