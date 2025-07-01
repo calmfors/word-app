@@ -68,6 +68,9 @@ export default function MathProblems() {
       setTimeout(() => {
         setCorrectAnswer(null);
         document.body.classList.toggle('blink-red');
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }      
       }, 1500);
     }
   }
