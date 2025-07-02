@@ -27,7 +27,7 @@ export default function TestWords() {
   useEffect(() => {
     async function fetchData() {
       setStatus('loading');
-      const data = await getData();
+      const data = await getData('word');
       wordList.push(...data.documents);
       const uniqueWords = Array.from(new Set(wordList.map(word => JSON.stringify(word)))).map(word => JSON.parse(word));
       wordList.length = 0; 

@@ -15,6 +15,8 @@ export default function Home() {
         >Öva glosor</Link>
         <Link href="/addwords"
         >Lägg till glosor</Link>
+        <Link href="/highscore"
+        >Topplista</Link>
       </main>
     </div>
   );

@@ -2,7 +2,8 @@
 import pageStyles from '../page.module.css';
 import subpagesStyles from '../subpages.module.css';
 import React, { useEffect, useState, useRef } from 'react';
-const duration = 60;  
+import { postData, getData } from '../lib/appwrite';
+const duration = 60;
 
 export default function MathProblems() {
   const [selectedType, setSelectedType] = useState('addition'); // Default to addition
@@ -12,6 +13,8 @@ export default function MathProblems() {
   const [answer, setAnswer] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [timer, setTimer] = useState(duration);
+  const [name, setName] = useState('');
+  const [enterName, setEnterName] = useState(false);
   const inputRef = useRef(null);
   const intervalRef = useRef(null);
   const styles = { ...pageStyles, ...subpagesStyles };
@@ -48,9 +51,9 @@ export default function MathProblems() {
     const tenOrHundred2 = Math.random() < 0.5 ? 10 : 100;
     const a = Math.floor(Math.random() * tenOrHundred);
     const b = Math.floor(Math.random() * tenOrHundred2);
-      const max = Math.max(a, b);
-      const min = Math.min(a, b);
-      setProblem(`${max} - ${min}`);
+    const max = Math.max(a, b);
+    const min = Math.min(a, b);
+    setProblem(`${max} - ${min}`);
   }
 
   const generateMultiplicationProblem = () => {
@@ -88,7 +91,7 @@ export default function MathProblems() {
         document.body.classList.toggle('blink-red');
         if (inputRef.current) {
           inputRef.current.focus();
-        }      
+        }
       }, 1500);
     }
   }
@@ -130,6 +133,68 @@ export default function MathProblems() {
 
   }
 
+  const checkResult = async () => {
+    console.log('Saving result...');
+    let isBest = false;
+    await getData('stats').then((data) => {
+      console.log('Fetched stats:', data);
+      if (!data || !data.documents || !data.documents.length) {
+        console.log('No previous stats found, this is the best result');
+        isBest = true;
+      }
+      else {
+        const allResults = data.documents.concat([{
+          correctAnswers: numberOfCorrectAnswers,
+          wrongAnswers: numberOfWrongAnswers
+        }]);
+        allResults.sort((a, b) =>
+          (b.correctAnswers - b.wrongAnswers) - (a.correctAnswers - a.wrongAnswers)
+        );
+        const index = allResults.findIndex(
+          r => r.correctAnswers === numberOfCorrectAnswers && r.wrongAnswers === numberOfWrongAnswers
+        );
+        isBest = index > -1 && index < 10;
+      }
+    }).catch((error) => {
+      console.error('Error fetching stats:', error);
+    });
+    if (isBest) {
+      setTimer(duration);
+      setEnterName(true);
+    } else {
+      console.log('Not the best result, no name entry needed');
+      resetGame(false);
+    }
+  }
+
+  const saveResult = () => {
+    console.log('Saving result with name:', name);
+    if (!name || name.trim() === '') {
+      setEnterName(false);
+      setName('');
+      resetGame(true);
+      return;
+    }
+    const result = {
+      type: selectedType,
+      correctAnswers: numberOfCorrectAnswers,
+      wrongAnswers: numberOfWrongAnswers,
+      time: duration,
+      name
+    };
+
+    postData('stats', result)
+      .then(() => {
+        console.log('Result saved successfully');
+        setEnterName(false);
+        setName('');
+        resetGame(true);
+      })
+      .catch((error) => {
+        console.error('Error saving result:', error);
+      });
+  }
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -152,9 +217,10 @@ export default function MathProblems() {
           <p>
             {problem} =
           </p>
-          <input ref={inputRef} type="number" placeholder="?" value={answer} onChange={(e) => setAnswer(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && checkAnswer()} onClick={countDown}/>
+          <label htmlFor="answer" className={styles.hidden}>Svar:</label>
+          <input ref={inputRef} id="answer" type="number" placeholder="?" value={answer} onChange={(e) => setAnswer(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && correctAnswer === null && checkAnswer()} onClick={countDown} />
           <button className={styles.checkmark} onClick={checkAnswer} disabled={!answer || timer === 0} >
-            <svg width="30" height="30" fill={answer ? '#10a64a' : '#ccc' } id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 101.6"><defs></defs><title>tick-green</title><path d="M4.67,67.27c-14.45-15.53,7.77-38.7,23.81-24C34.13,48.4,42.32,55.9,48,61L93.69,5.3c15.33-15.86,39.53,7.42,24.4,23.36L61.14,96.29a17,17,0,0,1-12.31,5.31h-.2a16.24,16.24,0,0,1-11-4.26c-9.49-8.8-23.09-21.71-32.91-30v0Z" /></svg>
+            <svg width="30" height="30" fill={answer ? '#10a64a' : '#ccc'} id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 101.6"><defs></defs><title>tick-green</title><path d="M4.67,67.27c-14.45-15.53,7.77-38.7,23.81-24C34.13,48.4,42.32,55.9,48,61L93.69,5.3c15.33-15.86,39.53,7.42,24.4,23.36L61.14,96.29a17,17,0,0,1-12.31,5.31h-.2a16.24,16.24,0,0,1-11-4.26c-9.49-8.8-23.09-21.71-32.91-30v0Z" /></svg>
           </button>
         </div>
           : <p>Laddar...</p>}
@@ -164,9 +230,16 @@ export default function MathProblems() {
           </p>
         )}
         {timer === 0 && (
-          <p className={styles.correct} onClick={resetGame}>
+          <p className={styles.correct} onClick={checkResult}>
             Tiden är ute, du hann med {numberOfCorrectAnswers} övningar!
           </p>
+        )}
+        {enterName && (
+          <div className={[styles.enterName]}>
+            <label htmlFor="namn">Skriv ditt namn</label>
+            <input id="name" type="text" autoFocus autoComplete="off" value={name} onChange={(e) => setName(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && saveResult()} />
+            <button onClick={saveResult}>Spara</button>
+          </div>
         )}
         <p><span>Antal rätt:</span> {numberOfCorrectAnswers} <span>Antal fel:</span> {numberOfWrongAnswers}</p>
       </main>

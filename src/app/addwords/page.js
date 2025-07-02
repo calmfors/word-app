@@ -46,7 +46,7 @@ export default function AddWords() {
     const startOfYear = new Date(currentDate.getFullYear(), 0, 1);
     const week = Math.ceil((((currentDate - startOfYear) / 86400000) + startOfYear.getDay() + 1) / 7);
     newWords.forEach(word => {
-      postData({
+      postData('word',{
         english: word.english,
         swedish: word.swedish,
         week  // Assuming week is not used here, set to "0"

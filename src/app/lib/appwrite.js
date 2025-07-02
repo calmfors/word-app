@@ -8,10 +8,12 @@ const account = new Account(client);
 const databases = new Databases(client);
 
 const databaseID = "685ba4d5000ebcb9e464";
-const collectionID = "685ba4db0033bacfc756";
+const wordID = "685ba4db0033bacfc756";
+const statsID = "6864e828003b3d86179d";
 
-async function getData(week) {
+async function getData(id, week) {
   console.log("Fetching data for week:", week);
+  const collectionID = id === 'word' ? wordID : statsID;
   let promise = databases.listDocuments(
     databaseID, collectionID, week ? [Query.equal('week', week)] : []
   );
@@ -24,7 +26,8 @@ async function getData(week) {
   return promise;
 }
 
-async function postData(data) {
+async function postData(id, data) {
+  const collectionID = id === 'word' ? wordID : statsID;
   let promise = databases.createDocument(
     databaseID,
     collectionID,
