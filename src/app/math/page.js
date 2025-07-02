@@ -1,6 +1,8 @@
 'use client'
-import styles from '../page.module.css';
+import pageStyles from '../page.module.css';
+import subpagesStyles from '../subpages.module.css';
 import React, { useEffect, useState, useRef } from 'react';
+const duration = 60;  
 
 export default function MathProblems() {
   const [selectedType, setSelectedType] = useState('addition'); // Default to addition
@@ -9,12 +11,14 @@ export default function MathProblems() {
   const [problem, setProblem] = useState('');
   const [answer, setAnswer] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState(null);
+  const [timer, setTimer] = useState(duration);
   const inputRef = useRef(null);
+  const intervalRef = useRef(null);
+  const styles = { ...pageStyles, ...subpagesStyles };
 
   useEffect(() => {
-    generateNewProblem();
-    setNumberOfCorrectAnswers(0);
-    setNumberOfWrongAnswers(0);
+    console.log('Selected type changed:', selectedType);
+    resetGame(true);
   }, [selectedType]);
 
   const generateAdditionProblem = () => {
@@ -23,6 +27,21 @@ export default function MathProblems() {
     const b = tenOrHundred === 100 ? Math.floor(Math.random() * 10) : Math.floor(Math.random() * 100);
     setProblem(`${a} + ${b}`);
   }
+
+  const countDown = () => {
+    if (!intervalRef.current && timer === duration) {
+      intervalRef.current = setInterval(() => {
+        setTimer(prev => prev > 0 ? prev - 1 : 0);
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    if (timer === 0 && intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  }, [timer]);
 
   const generateSubtractionProblem = () => {
     const tenOrHundred = Math.random() < 0.5 ? 10 : 100;
@@ -74,7 +93,7 @@ export default function MathProblems() {
     }
   }
 
-  const generateNewProblem = () => {
+  const generateNewProblem = (typeChanged) => {
     setCorrectAnswer(null);
     setAnswer('');
     if (selectedType === 'addition') {
@@ -86,13 +105,41 @@ export default function MathProblems() {
     } else if (selectedType === 'division') {
       generateDivisionProblem();
     }
-    if (inputRef.current) {
+    console.log('Generating new problem:', typeChanged);
+    if (inputRef.current && timer !== 0 && timer !== duration && !typeChanged) {
       inputRef.current.focus();
     }
   }
+
+  const resetGame = (typeChanged) => {
+    setTimer(duration);
+    setProblem('');
+    setAnswer('');
+    setCorrectAnswer(null);
+    setNumberOfCorrectAnswers(0);
+    setNumberOfWrongAnswers(0);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    if (inputRef.current) {
+      console.log('Resetting input focus');
+      inputRef.current.blur();
+    }
+    generateNewProblem(typeChanged);
+
+  }
+
   return (
     <div className={styles.page}>
-      <button className={styles.backButton} onClick={() => window.history.back()}></button>
+      <header className={styles.header}>
+        <button className={styles.backButton} onClick={() => window.history.back()}></button>
+        <div className={styles.timer}>
+          <span>
+            {Math.floor(timer / 60)}:{timer % 60 < 10 ? `0${timer % 60}` : timer % 60}
+          </span>
+        </div>
+      </header>
       <main className={styles.main}>
         <h1 className={styles.title}>
           Öva på att räkna
@@ -105,15 +152,20 @@ export default function MathProblems() {
           <p>
             {problem} =
           </p>
-          <input ref={inputRef} type="number" placeholder="?" value={answer} onChange={(e) => setAnswer(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && checkAnswer()} />
-          <button className={styles.checkmark} onClick={checkAnswer}>
-            <svg width="30" height="30" fill="#10a64a" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 101.6"><defs></defs><title>tick-green</title><path d="M4.67,67.27c-14.45-15.53,7.77-38.7,23.81-24C34.13,48.4,42.32,55.9,48,61L93.69,5.3c15.33-15.86,39.53,7.42,24.4,23.36L61.14,96.29a17,17,0,0,1-12.31,5.31h-.2a16.24,16.24,0,0,1-11-4.26c-9.49-8.8-23.09-21.71-32.91-30v0Z" /></svg>
+          <input ref={inputRef} type="number" placeholder="?" value={answer} onChange={(e) => setAnswer(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && checkAnswer()} onClick={countDown}/>
+          <button className={styles.checkmark} onClick={checkAnswer} disabled={!answer || timer === 0} >
+            <svg width="30" height="30" fill={answer ? '#10a64a' : '#ccc' } id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 101.6"><defs></defs><title>tick-green</title><path d="M4.67,67.27c-14.45-15.53,7.77-38.7,23.81-24C34.13,48.4,42.32,55.9,48,61L93.69,5.3c15.33-15.86,39.53,7.42,24.4,23.36L61.14,96.29a17,17,0,0,1-12.31,5.31h-.2a16.24,16.24,0,0,1-11-4.26c-9.49-8.8-23.09-21.71-32.91-30v0Z" /></svg>
           </button>
         </div>
           : <p>Laddar...</p>}
         {correctAnswer !== null && (
           <p onClick={() => { correctAnswer ? generateNewProblem : setCorrectAnswer(null); }} className={correctAnswer ? styles.correct : styles.incorrect}>
             {correctAnswer ? 'Rätt svar!' : 'Fel svar, försök igen'}
+          </p>
+        )}
+        {timer === 0 && (
+          <p className={styles.correct} onClick={resetGame}>
+            Tiden är ute, du hann med {numberOfCorrectAnswers} övningar!
           </p>
         )}
         <p><span>Antal rätt:</span> {numberOfCorrectAnswers} <span>Antal fel:</span> {numberOfWrongAnswers}</p>

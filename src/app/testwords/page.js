@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import styles from '../page.module.css';
+import pageStyles from '../page.module.css';
+import subPagesStyles from '../subpages.module.css'
 import words from '../../../resources/words.json';
 import { useTextToSpeech } from '../useTextToSpeech';
 import { getData } from '../lib/appwrite';
@@ -13,6 +14,7 @@ export default function TestWords() {
   const [animationKey, setAnimationKey] = useState(0);
   const [numberOfCorrectAnswers, setNumberOfCorrectAnswers] = useState(0);
   const [numberOfWrongAnswers, setNumberOfWrongAnswers] = useState(0);
+  const [timer, setTimer ] = useState('120')
   const [help, setHelp] = useState(false);
   const [fromLang, setFromLang] = useState('sv-SE');
   const [toLang, setToLang] = useState('en-US');
@@ -20,6 +22,7 @@ export default function TestWords() {
   const [soundOn, setSoundOn] = useState(true);
   const textToSpeech = useTextToSpeech();
   const wordList = words;
+  const styles = { ...pageStyles, ...subPagesStyles}
 
   useEffect(() => {
     async function fetchData() {
@@ -128,7 +131,14 @@ export default function TestWords() {
 
   return (
     <div className={styles.page}>
-      <button className={styles.backButton} onClick={() => window.history.back()}></button>
+      <header className={styles.header}>
+        <button className={styles.backButton} onClick={() => window.history.back()}></button>
+        <div className={styles.timer}>
+          <span>
+            {Math.floor(timer / 60)}:{timer % 60 < 10 ? `0${timer % 60}` : timer % 60}
+          </span>
+        </div>
+      </header>      
       <main className={styles.main}>
         <h1 className={styles.title}>Öva engelska glosor</h1>
         <p key={animationKey + 1}>

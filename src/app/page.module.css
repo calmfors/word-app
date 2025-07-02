@@ -3,8 +3,8 @@
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  padding: 80px 10px 0 10px;
-  gap: 60px;
+  padding: 0 10px;
+  gap: 30px;
   font-family: var(--font-geist-sans);
   position: relative;
 }
@@ -27,6 +27,14 @@
   opacity: 0;
   text-align: center;
   margin-bottom: 20px
+}
+
+.main > h1 {
+  margin-top: 60px;
+}
+
+header + .main > h1 {
+  margin-top: 0;
 }
 
 .main a,
@@ -250,24 +258,6 @@ button.speaker:hover {
   filter: brightness(0.5);
 }
 
-.backButton {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background-color: transparent;
-  background-image: url('/left-arrow.svg');
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 40px;
-  height: 40px;
-  border: none;
-  cursor: pointer;
-  color: #1b8eab;
-  font-size: 24px;
-  line-height: 1;
-  animation: slideInFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-
 .newWords {
   border: 2px solid #1b8eab;
   padding: 40px 20px 80px;
@@ -350,7 +340,7 @@ button.speaker:hover {
 
 @media (max-width: 768px) {
   .page {
-    padding: 70px 20px;
+    padding: 0 20px;
   }
 
   .main {

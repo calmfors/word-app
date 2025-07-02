@@ -1,0 +1,53 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.backButton {
+  background-color: transparent;
+  background-image: url('/left-arrow.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 40px;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+  color: #1b8eab;
+  font-size: 24px;
+  line-height: 1;
+  animation: slideInFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.timer {
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1;
+  color: #3a8eaa;
+  animation: slideInFromRight 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-150%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+      transform: translateX(150%);
+      opacity: 0;
+    }
+  
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+}
