@@ -46,7 +46,7 @@ export default function AddWords() {
     const startOfYear = new Date(currentDate.getFullYear(), 0, 1);
     const week = Math.ceil((((currentDate - startOfYear) / 86400000) + startOfYear.getDay() + 1) / 7);
     newWords.forEach(word => {
-      postData('word',{
+      postData('word', {
         english: word.english,
         swedish: word.swedish,
         week  // Assuming week is not used here, set to "0"
@@ -64,8 +64,9 @@ export default function AddWords() {
 
   return (
     <div className={styles.page}>
-      <button className={styles.backButton} onClick={() => window.history.back()}></button>
-      <main className={styles.main}>
+      <header className={styles.header}>
+        <button className={styles.backButton} onClick={() => window.history.back()}></button>
+      </header><main className={styles.main}>
         <h1 className={styles.title}>
           Lägg till nya engelska glosor
         </h1>
@@ -82,17 +83,17 @@ export default function AddWords() {
         </form>
         {newWords && newWords.length > 0 && (
           <div className={styles.newWords}>
-          <ul className={styles.newWordsList}>
-            {newWords.map((word, index) => (
-              <li key={index}>
-                <p>{word.english} - {word.swedish} <span className={styles.remove} data-index={index} onClick={removeWord}>&times;</span></p>
-              </li>
-            ))}
-          </ul>
-          <button className={styles.savebutton} onClick={saveWords}>
-            Spara nya glosorna
-          </button>
-          </div>       
+            <ul className={styles.newWordsList}>
+              {newWords.map((word, index) => (
+                <li key={index}>
+                  <p>{word.english} - {word.swedish} <span className={styles.remove} data-index={index} onClick={removeWord}>&times;</span></p>
+                </li>
+              ))}
+            </ul>
+            <button className={styles.savebutton} onClick={saveWords}>
+              Spara nya glosorna
+            </button>
+          </div>
         )}
         {(status === 'success' || status === 'error') && (
           <p onClick={() => setStatus('idle')} className={status === 'error' ? styles.incorrect : styles.correct}>

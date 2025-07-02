@@ -91,7 +91,7 @@
 .highscoreTable th,
 .highscoreTable td {
   color: #1b8eab;
-  padding: 10px;
+  padding: 5px;
   text-align: center;
   border-bottom: 1px solid #f700ff;
 }
@@ -105,7 +105,7 @@
 .highscoreTable td:first-child {
   font-weight: 800;
   font-size: 32px;
-  color: #1b8eab;  
+  color: #1b8eab;
 }
 
 @keyframes slideInFromLeft {
@@ -129,5 +129,15 @@
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .highscoreTable {
+    font-size: 20px;
+  }
+
+  .highscoreTable td:first-child {
+    font-size: 28px;
   }
 }
