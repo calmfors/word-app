@@ -2,11 +2,13 @@
 
 import React from "react";
 import { useState, useRef } from "react";
-import styles from "../page.module.css";
+import pageStyles from "../page.module.css";
+import subPagesStyles from "../subpages.module.css";
 import { postData } from "../lib/appwrite";
 import { useTextToSpeech } from "../useTextToSpeech";
 
 export default function AddWords() {
+  const styles = { ...pageStyles, ...subPagesStyles };
   const [newWords, setNewWords] = useState([]);
   const [status, setStatus] = useState("idle");
   const inputRef = useRef(null);
@@ -66,7 +68,8 @@ export default function AddWords() {
     <div className={styles.page}>
       <header className={styles.header}>
         <button className={styles.backButton} onClick={() => window.history.back()}></button>
-      </header><main className={styles.main}>
+      </header>
+      <main className={styles.main}>
         <h1 className={styles.title}>
           Lägg till nya engelska glosor
         </h1>
