@@ -195,6 +195,22 @@ export default function MathProblems() {
       });
   }
 
+  const addPaddingForKeyboard = () => {
+    if (window.innerWidth > 768) return;
+    document.body.classList.add(styles.keyboardOpen);
+  }
+
+  const removePaddingForKeyboard = () => {
+    if (window.innerWidth > 768) return;
+    document.body.classList.remove(styles.keyboardOpen);
+  }
+
+  const getPoints = () => {
+    const points = numberOfCorrectAnswers * 10 - numberOfWrongAnswers * 5;
+    if (points < 0) return 0; // Ensure points don't go below zero
+    return points;
+  }
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -209,16 +225,16 @@ export default function MathProblems() {
         <h1 className={styles.title}>
           Öva på att räkna
         </h1>
-        <button onClick={() => setSelectedType('addition')} className={selectedType !== 'addition' ? styles.notSelected : ''}>Addition</button>
-        <button onClick={() => setSelectedType('subtraction')} className={selectedType !== 'subtraction' ? styles.notSelected : ''}>Subtraktion</button>
-        <button onClick={() => setSelectedType('multiplication')} className={selectedType !== 'multiplication' ? styles.notSelected : ''}>Multiplikation</button>
-        <button onClick={() => setSelectedType('division')} className={selectedType !== 'division' ? styles.notSelected : ''}>Division</button>
+        <button onClick={() => setSelectedType('addition')} className={selectedType !== 'addition' ? styles.notSelected : ''}>Addition (+)</button>
+        <button onClick={() => setSelectedType('subtraction')} className={selectedType !== 'subtraction' ? styles.notSelected : ''}>Subtraktion (–)</button>
+        <button onClick={() => setSelectedType('multiplication')} className={selectedType !== 'multiplication' ? styles.notSelected : ''}>Multiplikation (×)</button>
+        <button onClick={() => setSelectedType('division')} className={selectedType !== 'division' ? styles.notSelected : ''}>Division (÷)</button>
         {problem ? <div className={styles.problem}>
           <p>
             {problem} =
           </p>
           <label htmlFor="answer" className={styles.hidden}>Svar:</label>
-          <input ref={inputRef} id="answer" type="number" placeholder="?" value={answer} onChange={(e) => setAnswer(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && correctAnswer === null && checkAnswer()} onClick={countDown} />
+          <input ref={inputRef} id="answer" type="number" placeholder="?" value={answer} onChange={(e) => setAnswer(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && correctAnswer === null && checkAnswer()} onClick={countDown} onFocus={addPaddingForKeyboard} onBlur={removePaddingForKeyboard} />
           <button className={styles.checkmark} onClick={checkAnswer} disabled={!answer || timer === 0} >
             <svg width="30" height="30" fill={answer ? '#10a64a' : '#ccc'} id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 101.6"><defs></defs><title>tick-green</title><path d="M4.67,67.27c-14.45-15.53,7.77-38.7,23.81-24C34.13,48.4,42.32,55.9,48,61L93.69,5.3c15.33-15.86,39.53,7.42,24.4,23.36L61.14,96.29a17,17,0,0,1-12.31,5.31h-.2a16.24,16.24,0,0,1-11-4.26c-9.49-8.8-23.09-21.71-32.91-30v0Z" /></svg>
           </button>
@@ -241,7 +257,7 @@ export default function MathProblems() {
             <button onClick={saveResult}>Spara</button>
           </div>
         )}
-        <p><span>Antal rätt:</span> {numberOfCorrectAnswers} <span>Antal fel:</span> {numberOfWrongAnswers}</p>
+        <p><span>Poäng:</span> {getPoints()} <span>Övningar:</span> {numberOfCorrectAnswers}</p>
       </main>
     </div>
   )

@@ -14,7 +14,7 @@ export default function Highscore() {
       try {
         const data = await getData('stats');
         if (data && data.documents) {
-          const sortedScores = data.documents.sort((a, b) => (b.correctAnswers - b.wrongAnswers) - (a.correctAnswers - a.wrongAnswers));
+          const sortedScores = data.documents.sort((a, b) => (b.correctAnswers * 10 - b.wrongAnswers * 5) - (a.correctAnswers * 10 - a.wrongAnswers * 5));
           setHighScoreList(sortedScores.slice(0, 10)); // Get top 10 scores          
         }
       } catch (error) {
@@ -24,7 +24,22 @@ export default function Highscore() {
     }
     fetchHighScores();
   }, []);
-  
+
+  const getSymbol = (type) => {
+    switch (type) {
+      case 'addition':
+        return '+';
+      case 'subtraction':
+        return '–';
+      case 'multiplication':
+        return '×';
+      case 'division':
+        return '÷';
+      default:
+        return type;
+    }
+  }
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -44,8 +59,7 @@ export default function Highscore() {
               <tr>
                 <th> </th>
                 <th>NAMN</th>
-                <th>RÄTT</th>
-                <th>FEL</th>
+                <th>POÄNG</th>
                 <th>TYP</th>
               </tr>
             </thead>
@@ -54,9 +68,8 @@ export default function Highscore() {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{score.name}</td>
-                  <td>{score.correctAnswers}</td>
-                  <td>{score.wrongAnswers}</td>
-                  <td>{score.type}</td>
+                  <td>{score.correctAnswers * 10 - score.wrongAnswers * 5}</td>
+                  <td data-type={score.type}>{getSymbol(score.type)}</td>
                 </tr>
               ))}
             </tbody>

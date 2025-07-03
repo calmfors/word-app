@@ -29,6 +29,14 @@
   line-height: 1;
   color: #3a8eaa;
   animation: slideInFromRight 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  z-index: 11;
+}
+
+.keyboardOpen {}
+
+.keyboardOpen .timer {
+  position: absolute;
+  top: 380px;
 }
 
 .hidden {
@@ -106,6 +114,19 @@
   font-weight: 800;
   font-size: 32px;
   color: #1b8eab;
+}
+
+.highscoreTable td[data-type="addition"] {
+  color: #2e9b24;
+}
+.highscoreTable td[data-type="subtraction"] {
+  color: #000eff;
+}
+.highscoreTable td[data-type="multiplication"] {
+  color: #f700ff;
+}
+.highscoreTable td[data-type="division"] {
+  color: #f9a825;
 }
 
 @keyframes slideInFromLeft {

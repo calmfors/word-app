@@ -1,20 +1,21 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import pageStyles from '../page.module.css';
 import subPagesStyles from '../subpages.module.css'
 import words from '../../../resources/words.json';
 import { useTextToSpeech } from '../useTextToSpeech';
-import { getData } from '../lib/appwrite';
+import { getData, postData } from '../lib/appwrite';
 
 export default function TestWords() {
+  const duration = 60; // Duration in seconds
   const [randomWords, setRandomWords] = useState([]);
   const [correctIndex, setCorrectIndex] = useState(0);
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [animationKey, setAnimationKey] = useState(0);
   const [numberOfCorrectAnswers, setNumberOfCorrectAnswers] = useState(0);
   const [numberOfWrongAnswers, setNumberOfWrongAnswers] = useState(0);
-  const [timer, setTimer ] = useState('120')
+  const [timer, setTimer ] = useState(duration);
   const [help, setHelp] = useState(false);
   const [fromLang, setFromLang] = useState('sv-SE');
   const [toLang, setToLang] = useState('en-US');
@@ -23,6 +24,10 @@ export default function TestWords() {
   const textToSpeech = useTextToSpeech();
   const wordList = words;
   const styles = { ...pageStyles, ...subPagesStyles}
+  const [name, setName] = useState('');
+  const [enterName, setEnterName] = useState(false);
+  const selectedType = 'ord'; // Assuming this is the type of exercise
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -65,10 +70,29 @@ export default function TestWords() {
     }
   }, [help]);
 
+  const countDown = () => {
+    if (!intervalRef.current && timer === duration) {
+      intervalRef.current = setInterval(() => {
+        setTimer(prev => prev > 0 ? prev - 1 : 0);
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    if (timer === 0 && intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  }, [timer]);
+
   const resetGame = () => {
     setNumberOfCorrectAnswers(0);
     setNumberOfWrongAnswers(0);
     getRandomWords();
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
   }
 
   const getRandomWords = () => {
@@ -128,6 +152,72 @@ export default function TestWords() {
       </main>
     </div>
   );
+  const checkResult = async () => {
+    console.log('Saving result...');
+    let isBest = false;
+    await getData('stats').then((data) => {
+      console.log('Fetched stats:', data);
+      if (!data || !data.documents || !data.documents.length) {
+        console.log('No previous stats found, this is the best result');
+        isBest = true;
+      }
+      else {
+        const allResults = data.documents.concat([{
+          correctAnswers: numberOfCorrectAnswers,
+          wrongAnswers: numberOfWrongAnswers
+        }]);
+        allResults.sort((a, b) =>
+          (b.correctAnswers * 10 - b.wrongAnswers * 5) - (a.correctAnswers * 10 - a.wrongAnswers * 5)
+        );
+        const index = allResults.findIndex(
+          r => r.correctAnswers === numberOfCorrectAnswers && r.wrongAnswers === numberOfWrongAnswers
+        );
+        isBest = index > -1 && index < 10;
+      }
+    }).catch((error) => {
+      console.error('Error fetching stats:', error);
+    });
+    if (isBest) {
+      setTimer(duration);
+      setEnterName(true);
+    } else {
+      console.log('Not the best result, no name entry needed');
+      resetGame(false);
+    }
+  }
+
+  const saveResult = () => {
+    console.log('Saving result with name:', name);
+    if (!name || name.trim() === '') {
+      setEnterName(false);
+      setName('');
+      resetGame(true);
+      return;
+    }
+    const result = {
+      type: selectedType,
+      correctAnswers: numberOfCorrectAnswers,
+      wrongAnswers: numberOfWrongAnswers,
+      time: duration,
+      name
+    };
+
+    postData('stats', result)
+      .then(() => {
+        console.log('Result saved successfully');
+        setEnterName(false);
+        setName('');
+        resetGame(true);
+      })
+      .catch((error) => {
+        console.error('Error saving result:', error);
+      });
+  }
+const getPoints = () => {
+  const points = numberOfCorrectAnswers * 10 - numberOfWrongAnswers * 5;
+  if (points < 0) return 0; // Ensure points don't go below zero
+  return points;
+}
 
   return (
     <div className={styles.page}>
@@ -144,7 +234,7 @@ export default function TestWords() {
         <p key={animationKey + 1}>
           Vad är <span className={styles.word} onClick={() => soundOn && textToSpeech(randomWords[correctIndex][fromLang === 'en-US' ? 'english' : 'swedish'], fromLang)}>{randomWords[correctIndex][fromLang === 'en-US' ? 'english' : 'swedish']}</span> på {fromLang === 'en-US' ? 'svenska' : 'engelska'}?
         </p>
-        <ul key={animationKey} className={soundOn ? '' : styles.wordListNoSound}>
+        <ul key={animationKey} className={soundOn ? '' : styles.wordListNoSound} onClick={countDown}>
           {randomWords.map((word, index) => (
             <li key={toLang === 'en-US' ? word.english : word.swedish}>
               <button disabled={word.disabled} data-word={word[toLang === 'en-US' ? 'english' : 'swedish']} onClick={handleClick}>{toLang === 'en-US' ? word.english : word.swedish}</button>
@@ -171,7 +261,19 @@ export default function TestWords() {
             {correctAnswer ? 'Rätt svar!' : 'Fel svar, försök igen'}
           </p>
         )}
-        <p><span>Antal rätt:</span> {numberOfCorrectAnswers} <span>Antal fel:</span> {numberOfWrongAnswers}</p>
+        {timer === 0 && (
+          <p className={styles.correct} onClick={checkResult}>
+            Tiden är ute, du hann med {numberOfCorrectAnswers} övningar!
+          </p>
+        )}
+        {enterName && (
+          <div className={[styles.enterName]}>
+            <label htmlFor="namn">Skriv ditt namn</label>
+            <input id="name" type="text" autoFocus autoComplete="off" value={name} onChange={(e) => setName(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && saveResult()} />
+            <button onClick={saveResult}>Spara</button>
+          </div>
+        )}
+        <p><span>Poäng:</span> {getPoints()} <span>Övningar:</span> {numberOfCorrectAnswers}</p>
       </main>
     </div>
   );

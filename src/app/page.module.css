@@ -212,6 +212,13 @@ p.incorrect {
   color: #d9304c;
 }
 
+.keyboardOpen {}
+
+body.keyboardOpen p.correct,
+body.keyboardOpen p.incorrect {
+  padding-top: 270px;
+}
+
 .buttons {
   display: flex;
   gap: 10px;
