@@ -220,7 +220,7 @@ export default function MathProblems() {
         )}
         {timer === 0 && (
           <p className={styles.correct} onClick={checkResult}>
-            Tiden är ute, du hann med {numberOfCorrectAnswers} övningar!
+            Tiden är ute{numberOfCorrectAnswers === 0 ? '!' : `, du hann med ${numberOfCorrectAnswers}${' '}${numberOfCorrectAnswers === 1 ? 'övning' : 'övningar'}!`}
           </p>
         )}
         {enterName && (
