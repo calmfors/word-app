@@ -275,9 +275,11 @@ button.speaker:hover {
   padding: 10px;
   width: 120px;
   border: none;
-  background-color: rgba(27, 142, 171, 0.1);
+  background-color: rgba(255, 255, 255, 0.5);
   color: #1b8eab;
   text-align: center;
+  border-radius: 10px;
+  border: 1px solid #1b8eab;
 }
 
 .main .problem p {
@@ -346,17 +348,6 @@ button.speaker:hover {
     font-size: 32px;
     width: 100px;
   }
-
-  .main .problem input::-webkit-inner-spin-button,
-    .main .problem input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    margin: 0; }
-/* 
-  .main .problem input[type=number] {
-    -moz-appearance: textfield;
-  } */
 
   .main .problem .checkmark {
     width: 30px;
