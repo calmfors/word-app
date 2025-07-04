@@ -63,9 +63,10 @@
   z-index: 11;
 }
 
-.keyboardOpen .timer {
+.keyboardOpen .timer,
+.keyboardOpen .backButton {
   position: absolute;
-  top: 320px;
+  top: 300px;
   z-index: 10;
 }
 
