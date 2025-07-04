@@ -41,10 +41,20 @@ footer {
   right: 0;
   width: 100%;
   z-index: -1;
+
+}
+
+footer div {
+  background-color: #b3daff;
+  height: 50px;
+  width: 100%;
 }
 
 footer svg {
   position: absolute;
-  bottom: 0;
+  bottom: 50px;
+  height: min(300px, calc(100vw / 3));
+  min-height: 150px;  
+  width: 100vw;
   opacity: 0.2;
 }

@@ -31,7 +31,7 @@
   margin-bottom: 20px
 }
 
-.main > h1 {
+.main>h1 {
   margin-top: 80px;
 }
 
@@ -138,19 +138,19 @@
 }
 
 .main ul li:nth-child(1) {
-  animation-delay: 2s;
+  animation-delay: 1s;
 }
 
 .main ul li:nth-child(2) {
-  animation-delay: 2.2s;
+  animation-delay: 1.2s;
 }
 
 .main ul li:nth-child(3) {
-  animation-delay: 2.4s;
+  animation-delay: 1.4s;
 }
 
 .main ul li:nth-child(4) {
-  animation-delay: 2.6s;
+  animation-delay: 1.6s;
 }
 
 .main ul.wordListNoSound {
@@ -269,15 +269,19 @@ button.speaker:hover {
 }
 
 .main .problem input {
-  font-size: 32px;
+  font-size: 48px;
   line-height: 1.6;
   margin-left: 10px;
   padding: 10px;
-  width:100px;
-  border:none;
+  width: 120px;
+  border: none;
   background-color: rgba(27, 142, 171, 0.1);
   color: #1b8eab;
   text-align: center;
+}
+
+.main .problem p {
+  font-size: 48px;
 }
 
 .main .problem input:focus-visible {
@@ -287,13 +291,15 @@ button.speaker:hover {
 .main .problem input:focus::placeholder {
   color: transparent;
 }
+
 .main button.checkmark {
   background-color: transparent;
-  padding:0;
-  width: 30px;
-  height: 30px;
+  padding: 0;
+  width: 40px;
+  height: 40px;
   margin-left: 10px;
 }
+
 @keyframes slideInFromLeft {
   from {
     transform: translateX(-150%);
@@ -309,7 +315,7 @@ button.speaker:hover {
 
 @media (max-width: 768px) {
   .page {
-    padding: 0px 10px;
+    padding: 0px 10px 30px;
   }
 
   .main {
@@ -334,6 +340,31 @@ button.speaker:hover {
 
   .problem {
     margin: 20px 0;
+  }
+
+  .main .problem input {
+    font-size: 32px;
+    width: 100px;
+  }
+
+  .main .problem input::-webkit-inner-spin-button,
+    .main .problem input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; }
+/* 
+  .main .problem input[type=number] {
+    -moz-appearance: textfield;
+  } */
+
+  .main .problem .checkmark {
+    width: 30px;
+    height: 30px;
+  }
+
+  .main .problem p {
+    font-size: 32px;
   }
 
   .main p .word {
@@ -368,7 +399,7 @@ button.speaker:hover {
   }
 
   .main ul.wordListNoSound {
-    padding: 10px 0 20px 0; 
+    padding: 10px 0 20px 0;
   }
 
   .backButton {

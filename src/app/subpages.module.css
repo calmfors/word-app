@@ -1,9 +1,6 @@
 .header {
   position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  width: 100vw;
   padding: 20px 10px;
   z-index: 10;
 }
@@ -13,9 +10,32 @@
   top: 0;
   left: -20px;
   right: -20px;
-  opacity:0;
+  opacity: 0;
   animation: slideInFromTop 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
   animation-delay: 0.2s;
+  height: min(300px, calc(100vw / 2));
+  width: calc(100% + 20px);
+  min-height: 150px;
+}
+
+.widthLimiter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.widthLimiter svg {
+  width: 300px;
+  height: 300px;
+  opacity: 0;
+  right: 0;
+  left: unset;
+  animation: slideInFromTop 2s cubic-bezier(0.23, 1, 0.32, 1) forwards,
+    rotateBackAndForth 8s ease-in-out 1.6s infinite alternate;
 }
 
 .backButton {
@@ -58,16 +78,16 @@ p.incorrect {
   animation: slideInFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
   animation-delay: 0;
   position: absolute;
-  top: 60px;
+  top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  height: 100vh;
   background-color: rgba(255, 255, 255, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
-  padding-bottom: 80px;
+  z-index: 20;
+  padding: 0 10px 80px;
 }
 
 p.correct {
@@ -140,6 +160,7 @@ p.incorrect {
   border-collapse: collapse;
   width: 100%;
   max-width: 400px;
+  animation: slideInFromBottom 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
 .highscoreTable th,
@@ -181,6 +202,33 @@ p.incorrect {
 .highscoreTable td[data-type="division"] {
   color: #f9a825;
 }
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(150%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes rotateBackAndForth {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(20deg);
+  }
+
+  100% {
+    transform: rotate(-20deg);
+  }
+}
+
 
 @keyframes slideInFromTop {
   from {
@@ -233,7 +281,14 @@ p.incorrect {
     line-height: 1 !important;
   }
 
-  .header {
-    width: 100vw;
+  .enterName label {
+    font-size: 48px;
+  }
+
+  .widthLimiter svg {
+    width: 200px;
+    height: 200px;
+    right: -20px;
+    top: -20px;
   }
 }
