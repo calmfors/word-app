@@ -63,12 +63,6 @@
   z-index: 11;
 }
 
-/* .keyboardOpen .timer {
-  position: absolute;
-  top: 320px;
-  z-index: 10;
-} */
-
 p.correct,
 p.incorrect {
   font-size: 108px;
@@ -81,7 +75,7 @@ p.incorrect {
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: -63px;
   background-color: rgba(255, 255, 255, 0.8);
   display: flex;
   align-items: center;
@@ -98,10 +92,10 @@ p.incorrect {
   color: #d9304c;
 }
 
-/* .keyboardOpen p.correct,
+.keyboardOpen p.correct,
 .keyboardOpen p.incorrect {
   padding-top: 270px;
-} */
+}
 
 .hidden {
   position: absolute;
