@@ -33,3 +33,18 @@ body.blink-green {
 body.blink-red {
   animation: blink-red 0.2s;
 }
+
+footer {
+  position: fixed;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: -1;
+}
+
+footer svg {
+  position: absolute;
+  bottom: 0;
+  opacity: 0.2;
+}

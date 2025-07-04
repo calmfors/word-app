@@ -3,6 +3,7 @@ import pageStyles from '../page.module.css';
 import subpagesStyles from '../subpages.module.css';
 import React, { useEffect, useState, useRef } from 'react';
 import { postData, getData } from '../lib/appwrite';
+import Header from '../components/Header';
 const duration = 60;
 
 export default function MathProblems() {
@@ -15,6 +16,8 @@ export default function MathProblems() {
   const [timer, setTimer] = useState(duration);
   const [name, setName] = useState('');
   const [enterName, setEnterName] = useState(false);
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const [startTimer, setStartTimer] = useState(false);
   const inputRef = useRef(null);
   const intervalRef = useRef(null);
   const styles = { ...pageStyles, ...subpagesStyles };
@@ -30,21 +33,6 @@ export default function MathProblems() {
     const b = tenOrHundred === 100 ? Math.floor(Math.random() * 10) : Math.floor(Math.random() * 100);
     setProblem(`${a} + ${b}`);
   }
-
-  const countDown = () => {
-    if (!intervalRef.current && timer === duration) {
-      intervalRef.current = setInterval(() => {
-        setTimer(prev => prev > 0 ? prev - 1 : 0);
-      }, 1000);
-    }
-  };
-
-  useEffect(() => {
-    if (timer === 0 && intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  }, [timer]);
 
   const generateSubtractionProblem = () => {
     const tenOrHundred = Math.random() < 0.5 ? 10 : 100;
@@ -121,6 +109,7 @@ export default function MathProblems() {
     setCorrectAnswer(null);
     setNumberOfCorrectAnswers(0);
     setNumberOfWrongAnswers(0);
+    setStartTimer(false);
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
@@ -180,6 +169,7 @@ export default function MathProblems() {
       correctAnswers: numberOfCorrectAnswers,
       wrongAnswers: numberOfWrongAnswers,
       time: duration,
+      points: getPoints(),
       name
     };
 
@@ -195,16 +185,6 @@ export default function MathProblems() {
       });
   }
 
-  const addPaddingForKeyboard = () => {
-    if (window.innerWidth > 768) return;
-    document.body.classList.add(styles.keyboardOpen);
-  }
-
-  const removePaddingForKeyboard = () => {
-    if (window.innerWidth > 768) return;
-    document.body.classList.remove(styles.keyboardOpen);
-  }
-
   const getPoints = () => {
     const points = numberOfCorrectAnswers * 10 - numberOfWrongAnswers * 5;
     if (points < 0) return 0; // Ensure points don't go below zero
@@ -213,16 +193,9 @@ export default function MathProblems() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <button className={styles.backButton} onClick={() => window.history.back()}></button>
-        <div className={styles.timer}>
-          <span>
-            {Math.floor(timer / 60)}:{timer % 60 < 10 ? `0${timer % 60}` : timer % 60}
-          </span>
-        </div>
-      </header>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
+      <Header timer={timer} setTimer={setTimer} duration={duration} startTimer={startTimer} keyboardOpen={keyboardOpen} intervalRef={intervalRef} />
+      <main className={`${styles.main} ${keyboardOpen && window.innerWidth < 768 ? styles.keyboardOpen : ''}`}>
+      <h1 className={styles.title}>
           Öva på att räkna
         </h1>
         <button onClick={() => setSelectedType('addition')} className={selectedType !== 'addition' ? styles.notSelected : ''}>Addition (+)</button>
@@ -234,7 +207,7 @@ export default function MathProblems() {
             {problem} =
           </p>
           <label htmlFor="answer" className={styles.hidden}>Svar:</label>
-          <input ref={inputRef} id="answer" type="number" placeholder="?" value={answer} onChange={(e) => setAnswer(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && correctAnswer === null && checkAnswer()} onClick={countDown} onFocus={addPaddingForKeyboard} onBlur={removePaddingForKeyboard} />
+          <input ref={inputRef} id="answer" type="number" placeholder="?" value={answer} onChange={(e) => setAnswer(e.target.value)} onKeyUp={(e) => e.key === 'Enter' && correctAnswer === null && timer > 0 && checkAnswer()} onClick={() => setStartTimer(true)} onFocus={() => setKeyboardOpen(true)} onBlur={() => setKeyboardOpen(false)} />
           <button className={styles.checkmark} onClick={checkAnswer} disabled={!answer || timer === 0} >
             <svg width="30" height="30" fill={answer ? '#10a64a' : '#ccc'} id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 101.6"><defs></defs><title>tick-green</title><path d="M4.67,67.27c-14.45-15.53,7.77-38.7,23.81-24C34.13,48.4,42.32,55.9,48,61L93.69,5.3c15.33-15.86,39.53,7.42,24.4,23.36L61.14,96.29a17,17,0,0,1-12.31,5.31h-.2a16.24,16.24,0,0,1-11-4.26c-9.49-8.8-23.09-21.71-32.91-30v0Z" /></svg>
           </button>

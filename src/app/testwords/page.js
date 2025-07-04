@@ -4,8 +4,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import pageStyles from '../page.module.css';
 import subPagesStyles from '../subpages.module.css'
 import words from '../../../resources/words.json';
-import { useTextToSpeech } from '../useTextToSpeech';
+import { useTextToSpeech } from '../lib/useTextToSpeech';
 import { getData, postData } from '../lib/appwrite';
+import Header from '../components/Header';
 
 export default function TestWords() {
   const duration = 60; // Duration in seconds
@@ -21,6 +22,7 @@ export default function TestWords() {
   const [toLang, setToLang] = useState('en-US');
   const [status, setStatus] = useState('loading');
   const [soundOn, setSoundOn] = useState(true);
+  const [startTimer, setStartTimer] = useState(false);
   const textToSpeech = useTextToSpeech();
   const wordList = words;
   const styles = { ...pageStyles, ...subPagesStyles}
@@ -70,25 +72,12 @@ export default function TestWords() {
     }
   }, [help]);
 
-  const countDown = () => {
-    if (!intervalRef.current && timer === duration) {
-      intervalRef.current = setInterval(() => {
-        setTimer(prev => prev > 0 ? prev - 1 : 0);
-      }, 1000);
-    }
-  };
-
-  useEffect(() => {
-    if (timer === 0 && intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  }, [timer]);
-
   const resetGame = () => {
     setNumberOfCorrectAnswers(0);
     setNumberOfWrongAnswers(0);
     getRandomWords();
+    setStartTimer(false);
+    setTimer(duration);
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
@@ -199,6 +188,7 @@ export default function TestWords() {
       correctAnswers: numberOfCorrectAnswers,
       wrongAnswers: numberOfWrongAnswers,
       time: duration,
+      points: getPoints(),
       name
     };
 
@@ -221,20 +211,13 @@ const getPoints = () => {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <button className={styles.backButton} onClick={() => window.history.back()}></button>
-        <div className={styles.timer}>
-          <span>
-            {Math.floor(timer / 60)}:{timer % 60 < 10 ? `0${timer % 60}` : timer % 60}
-          </span>
-        </div>
-      </header>      
+      <Header timer={timer} setTimer={setTimer} duration={duration} startTimer={startTimer} keyboardOpen={false} intervalRef={intervalRef} />      
       <main className={styles.main}>
         <h1 className={styles.title}>Öva engelska glosor</h1>
         <p key={animationKey + 1}>
           Vad är <span className={styles.word} onClick={() => soundOn && textToSpeech(randomWords[correctIndex][fromLang === 'en-US' ? 'english' : 'swedish'], fromLang)}>{randomWords[correctIndex][fromLang === 'en-US' ? 'english' : 'swedish']}</span> på {fromLang === 'en-US' ? 'svenska' : 'engelska'}?
         </p>
-        <ul key={animationKey} className={soundOn ? '' : styles.wordListNoSound} onClick={countDown}>
+        <ul key={animationKey} className={soundOn ? '' : styles.wordListNoSound} onClick={() => setStartTimer(true)}>
           {randomWords.map((word, index) => (
             <li key={toLang === 'en-US' ? word.english : word.swedish}>
               <button disabled={word.disabled} data-word={word[toLang === 'en-US' ? 'english' : 'swedish']} onClick={handleClick}>{toLang === 'en-US' ? word.english : word.swedish}</button>

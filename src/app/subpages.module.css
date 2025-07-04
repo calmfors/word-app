@@ -1,9 +1,21 @@
 .header {
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 20px 0;
+  padding: 20px 10px;
+  z-index: 10;
+}
+
+.header svg {
+  position: absolute;
+  top: 0;
+  left: -20px;
+  right: -20px;
+  opacity:0;
+  animation: slideInFromTop 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  animation-delay: 0.2s;
 }
 
 .backButton {
@@ -22,8 +34,7 @@
 }
 
 .timer {
-  position: fixed;
-  right: 20px;
+  right: 10px;
   font-size: 40px;
   font-weight: 800;
   line-height: 1;
@@ -32,11 +43,44 @@
   z-index: 11;
 }
 
-.keyboardOpen {}
-
 .keyboardOpen .timer {
   position: absolute;
-  top: 380px;
+  top: 280px;
+  z-index: 10;
+}
+
+p.correct,
+p.incorrect {
+  font-size: 108px;
+  line-height: 1;
+  font-weight: 800;
+  text-align: center;
+  animation: slideInFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  animation-delay: 0;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  padding-bottom: 80px;
+}
+
+p.correct {
+  color: #2e9b24;
+}
+
+p.incorrect {
+  color: #d9304c;
+}
+
+.keyboardOpen p.correct,
+.keyboardOpen p.incorrect {
+  padding-top: 270px;
 }
 
 .hidden {
@@ -94,6 +138,8 @@
 .highscoreTable {
   font-size: 24px;
   border-collapse: collapse;
+  width: 100%;
+  max-width: 400px;
 }
 
 .highscoreTable th,
@@ -102,6 +148,10 @@
   padding: 5px;
   text-align: center;
   border-bottom: 1px solid #f700ff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 70px;
 }
 
 .highscoreTable th {
@@ -119,14 +169,29 @@
 .highscoreTable td[data-type="addition"] {
   color: #2e9b24;
 }
+
 .highscoreTable td[data-type="subtraction"] {
   color: #000eff;
 }
+
 .highscoreTable td[data-type="multiplication"] {
   color: #f700ff;
 }
+
 .highscoreTable td[data-type="division"] {
   color: #f9a825;
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-150%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: .2;
+  }
 }
 
 @keyframes slideInFromLeft {
@@ -160,5 +225,15 @@
 
   .highscoreTable td:first-child {
     font-size: 28px;
+  }
+
+  p.correct,
+  p.incorrect {
+    font-size: 48px !important;
+    line-height: 1 !important;
+  }
+
+  .header {
+    width: 100vw;
   }
 }

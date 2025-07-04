@@ -14,7 +14,7 @@ export default function Highscore() {
       try {
         const data = await getData('stats');
         if (data && data.documents) {
-          const sortedScores = data.documents.sort((a, b) => (b.correctAnswers * 10 - b.wrongAnswers * 5) - (a.correctAnswers * 10 - a.wrongAnswers * 5));
+          const sortedScores = data.documents.sort((a, b) => b.points - a.points);
           setHighScoreList(sortedScores.slice(0, 10)); // Get top 10 scores          
         }
       } catch (error) {
@@ -57,7 +57,7 @@ export default function Highscore() {
           <table className={styles.highscoreTable}>
             <thead>
               <tr>
-                <th> </th>
+                <th>#</th>
                 <th>NAMN</th>
                 <th>POÄNG</th>
                 <th>TYP</th>
@@ -68,7 +68,7 @@ export default function Highscore() {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{score.name}</td>
-                  <td>{score.correctAnswers * 10 - score.wrongAnswers * 5}</td>
+                  <td>{score.points}</td>
                   <td data-type={score.type}>{getSymbol(score.type)}</td>
                 </tr>
               ))}

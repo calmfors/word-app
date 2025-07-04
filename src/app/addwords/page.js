@@ -5,7 +5,7 @@ import { useState, useRef } from "react";
 import pageStyles from "../page.module.css";
 import subPagesStyles from "../subpages.module.css";
 import { postData } from "../lib/appwrite";
-import { useTextToSpeech } from "../useTextToSpeech";
+import { useTextToSpeech } from "../lib/useTextToSpeech";
 
 export default function AddWords() {
   const styles = { ...pageStyles, ...subPagesStyles };
