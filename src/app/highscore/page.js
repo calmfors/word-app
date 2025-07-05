@@ -14,7 +14,12 @@ export default function Highscore() {
       try {
         const data = await getData('stats');
         if (data && data.documents) {
-          const sortedScores = data.documents.sort((a, b) => b.points - a.points);
+          const sortedScores = data.documents.sort((a, b) =>{
+            if (b.points !== a.points) {
+              return b.points - a.points; // Sort by points descending
+            }
+            return a.wrongAnswers - b.wrongAnswers; // If points are equal, sort by wrongAnswers ascending
+          });
           console.log("Fetched high scores:", sortedScores);
           setHighScoreList(sortedScores.slice(0, 10)); // Get top 10 scores          
         }

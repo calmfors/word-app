@@ -197,7 +197,8 @@ export default function TestWords() {
         console.log('Result saved successfully');
         setEnterName(false);
         setName('');
-        resetGame(true);
+        //resetGame(true);
+        window.location.href = '/highscore';
       })
       .catch((error) => {
         console.error('Error saving result:', error);
