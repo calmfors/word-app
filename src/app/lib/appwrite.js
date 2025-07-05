@@ -14,8 +14,10 @@ const statsID = "6864e828003b3d86179d";
 async function getData(id, week) {
   console.log("Fetching data for week:", week);
   const collectionID = id === 'word' ? wordID : statsID;
+  const queries = id === 'word' ? [Query.limit(100)] : [Query.orderDesc('points')];
+  if (week) queries.push(Query.equal('week', week));
   let promise = databases.listDocuments(
-    databaseID, collectionID, week ? [Query.equal('week', week)] : []
+    databaseID, collectionID, queries
   );
 
   promise.then(function (response) {
