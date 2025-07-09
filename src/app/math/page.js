@@ -4,7 +4,7 @@ import subpagesStyles from '../subpages.module.css';
 import React, { useEffect, useState, useRef } from 'react';
 import { postData, getData } from '../lib/appwrite';
 import Header from '../components/Header';
-const duration = 60;
+const duration = 70;
 
 export default function MathProblems() {
   const [selectedType, setSelectedType] = useState('addition'); // Default to addition
@@ -18,6 +18,7 @@ export default function MathProblems() {
   const [enterName, setEnterName] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const [startTimer, setStartTimer] = useState(false);
+  const [extraTimeClicked, setExtraTimeClicked] = useState(false);
   const inputRef = useRef(null);
   const intervalRef = useRef(null);
   const styles = { ...pageStyles, ...subpagesStyles };
@@ -110,6 +111,7 @@ export default function MathProblems() {
     setNumberOfCorrectAnswers(0);
     setNumberOfWrongAnswers(0);
     setStartTimer(false);
+    setExtraTimeClicked(false);
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
@@ -168,7 +170,7 @@ export default function MathProblems() {
       type: selectedType,
       correctAnswers: numberOfCorrectAnswers,
       wrongAnswers: numberOfWrongAnswers,
-      time: duration,
+      time: duration + extraTimeClicked ? 20 : 0,
       points: getPoints(),
       name
     };
@@ -214,6 +216,14 @@ export default function MathProblems() {
           </button>
         </div>
           : <p>Laddar...</p>}
+        <section className={styles.buttons}>
+          <button className={styles.grey} onClick={() => {!extraTimeClicked && setTimer(timer + 20); setExtraTimeClicked(true);}}>
+            Mer tid &bull;
+          </button>
+          <button className={styles.grey} onClick={resetGame}>
+            Börja om
+          </button>
+        </section>
         {correctAnswer !== null && (
           <p onClick={() => { correctAnswer ? generateNewProblem : setCorrectAnswer(null); }} className={correctAnswer ? styles.correct : styles.incorrect}>
             {correctAnswer ? 'Rätt svar!' : 'Fel svar, försök igen'}
