@@ -196,7 +196,7 @@ export default function MathProblems() {
 
   return (
     <div className={styles.page}>
-      <Header timer={timer} setTimer={setTimer} duration={duration} startTimer={startTimer} keyboardOpen={keyboardOpen} intervalRef={intervalRef} />
+      <Header timer={timer} setTimer={setTimer} duration={extraTimeClicked ? duration + 20 : duration} startTimer={startTimer} keyboardOpen={keyboardOpen} intervalRef={intervalRef} />
       <main className={`${styles.main} ${keyboardOpen && window.innerWidth < 768 ? styles.keyboardOpen : ''}`}>
       <h1 className={styles.title}>
           Öva på att räkna

@@ -10,7 +10,6 @@ export default function Header({ timer, setTimer, startTimer, duration, keyboard
     if (startTimer) countDown();
   }, [startTimer]);
 
-
   const countDown = () => {
     if (!intervalRef.current && timer === duration) {
       intervalRef.current = setInterval(() => {
