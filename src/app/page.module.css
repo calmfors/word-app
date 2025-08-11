@@ -165,6 +165,7 @@
   text-align: center;
   animation: slideInFromLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
   opacity: 0;
+  z-index: 10;
 }
 
 .main p span {
@@ -176,7 +177,6 @@ span.word {
   border: 1px solid #1b8eab;
   padding: 10px 20px;
   border-radius: 10px;
-  z-index: 10;
 }
 
 .main p[key] {
