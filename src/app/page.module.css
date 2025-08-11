@@ -176,6 +176,7 @@ span.word {
   border: 1px solid #1b8eab;
   padding: 10px 20px;
   border-radius: 10px;
+  z-index: 10;
 }
 
 .main p[key] {
