@@ -86,7 +86,7 @@ export default function TestWords() {
 
   const getRandomWords = () => {
     setCorrectAnswer(null);
-    const numberOfWords = wordList.length;
+    const numberOfWords = wordList.map(word => word.week === 40).length;
     const uniqueIndexes = new Set();
     while (uniqueIndexes.size < 4) {
       uniqueIndexes.add(Math.floor(Math.random() * numberOfWords));
