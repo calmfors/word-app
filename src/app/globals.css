@@ -45,9 +45,14 @@ footer {
 }
 
 footer div {
-  background-color: #aad7fd;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #d0e9fe;
   height: 50px;
   width: 100%;
+  opacity: 0.2;
 }
 
 footer svg {
