@@ -5,7 +5,7 @@ import pageStyles from '../page.module.css';
 import subPagesStyles from '../subpages.module.css'
 import words from '../../../resources/words.json';
 import { useTextToSpeech } from '../lib/useTextToSpeech';
-import { getData, postData } from '../lib/appwrite';
+import { getData, postData, getWeeks } from '../lib/appwrite';
 import Header from '../components/Header';
 
 export default function TestWords() {
@@ -16,7 +16,7 @@ export default function TestWords() {
   const [animationKey, setAnimationKey] = useState(0);
   const [numberOfCorrectAnswers, setNumberOfCorrectAnswers] = useState(0);
   const [numberOfWrongAnswers, setNumberOfWrongAnswers] = useState(0);
-  const [timer, setTimer ] = useState(duration);
+  const [timer, setTimer] = useState(duration);
   const [help, setHelp] = useState(false);
   const [fromLang, setFromLang] = useState('sv-SE');
   const [toLang, setToLang] = useState('en-US');
@@ -25,29 +25,41 @@ export default function TestWords() {
   const [startTimer, setStartTimer] = useState(false);
   const textToSpeech = useTextToSpeech();
   const wordList = words;
-  const styles = { ...pageStyles, ...subPagesStyles}
+  const styles = { ...pageStyles, ...subPagesStyles }
   const [name, setName] = useState('');
   const [enterName, setEnterName] = useState(false);
   const selectedType = 'ord'; // Assuming this is the type of exercise
   const intervalRef = useRef(null);
+  const [selectedData, setSelectedData] = useState([]);
+  const [allData, setAllData] = useState([]);
+  const [previousWords, setPreviousWords] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       setStatus('loading');
       const data = await getData('word');
       wordList.push(...data.documents);
+      const availableWeeks = await getWeeks();
+      const weekData = await getData('word', availableWeeks[0]);
+      wordList.push(...weekData.documents);
+      setSelectedData(weekData.documents);
       const uniqueWords = Array.from(new Set(wordList.map(word => JSON.stringify(word)))).map(word => JSON.parse(word));
-      wordList.length = 0; 
+      wordList.length = 0;
       wordList.push(...uniqueWords);
+      setAllData(uniqueWords);
     }
     fetchData();
-    getRandomWords();
   }, []);
+
+  useEffect(() => {
+    if (!allData || allData.length === 0) return;
+    getRandomWords();
+  }, [allData, selectedData]);
 
   useEffect(() => {
     if (fromLang === 'en-US') setToLang('sv-SE');
     else setToLang('en-US');
-    resetGame();
+    if (allData.length > 0) resetGame();
   }, [fromLang]);
 
   useEffect(() => {
@@ -84,15 +96,31 @@ export default function TestWords() {
     }
   }
 
-  const getRandomWords = () => {
-    setCorrectAnswer(null);
-    const numberOfWords = wordList.map(word => word.week === 40).length;
-    const uniqueIndexes = new Set();
-    while (uniqueIndexes.size < 4) {
-      uniqueIndexes.add(Math.floor(Math.random() * numberOfWords));
+  useEffect(() => {
+    if (selectedData.length > 0 && previousWords.length === selectedData.length) {
+      setPreviousWords([]);
     }
-    const selectedWords = Array.from(uniqueIndexes).map((i) => wordList[i]);
-    const answerIndex = Math.floor(Math.random() * 4);
+  }, [previousWords]);
+
+  const getRandomWords = () => {
+    const randomWeekWord = selectedData[Math.floor(Math.random() * selectedData.length)];
+    if (previousWords.some(word => word.english === randomWeekWord.english && word.swedish === randomWeekWord.swedish)) {
+      return getRandomWords(); // Retry if it is
+    }
+    setCorrectAnswer(null);
+    const numberOfWords = allData.length;
+    const uniqueIndexes = new Set();
+    while (uniqueIndexes.size < 3) {
+      const randomIndex = Math.floor(Math.random() * numberOfWords);
+      if (allData[randomIndex].english !== randomWeekWord.english && allData[randomIndex].swedish !== randomWeekWord.swedish) {
+        uniqueIndexes.add(randomIndex);
+      }
+    }
+    const selectedWords = Array.from(uniqueIndexes).map((i) => allData[i]);
+    setPreviousWords((prev) => [...prev, randomWeekWord]);
+    const randomInsertIndex = Math.floor(Math.random() * 4);
+    selectedWords.splice(randomInsertIndex, 0, randomWeekWord);
+    const answerIndex = randomInsertIndex;
     selectedWords.forEach((word, index) => {
       word = { ...word, disabled: false };
     });
@@ -204,15 +232,15 @@ export default function TestWords() {
         console.error('Error saving result:', error);
       });
   }
-const getPoints = () => {
-  const points = numberOfCorrectAnswers * 10 - numberOfWrongAnswers * 5;
-  if (points < 0) return 0; // Ensure points don't go below zero
-  return points;
-}
+  const getPoints = () => {
+    const points = numberOfCorrectAnswers * 10 - numberOfWrongAnswers * 5;
+    if (points < 0) return 0; // Ensure points don't go below zero
+    return points;
+  }
 
   return (
     <div className={styles.page}>
-      <Header timer={timer} setTimer={setTimer} duration={duration} startTimer={startTimer} keyboardOpen={false} intervalRef={intervalRef} />      
+      <Header timer={timer} setTimer={setTimer} duration={duration} startTimer={startTimer} keyboardOpen={false} intervalRef={intervalRef} />
       <main className={styles.main}>
         <h1 className={styles.title}>Öva engelska glosor</h1>
         <p key={animationKey + 1}>
