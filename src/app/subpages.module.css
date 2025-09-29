@@ -65,10 +65,13 @@
   z-index: 12;
 }
 
+.keyboardOpen .header {
+  z-index: 20;
+}
+
 .keyboardOpen .timer {
   position: absolute;
   top: 290px;
-  z-index: 10;
 }
 
 p.correct,
