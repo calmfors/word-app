@@ -170,7 +170,7 @@ export default function MathProblems() {
       type: selectedType,
       correctAnswers: numberOfCorrectAnswers,
       wrongAnswers: numberOfWrongAnswers,
-      time: duration + extraTimeClicked ? 20 : 0,
+      time: duration + (extraTimeClicked ? 30 : 0),
       points: getPoints(),
       name
     };
@@ -196,7 +196,7 @@ export default function MathProblems() {
 
   return (
     <div className={styles.page}>
-      <Header timer={timer} setTimer={setTimer} duration={extraTimeClicked ? duration + 20 : duration} startTimer={startTimer} keyboardOpen={keyboardOpen} intervalRef={intervalRef} />
+      <Header timer={timer} setTimer={setTimer} duration={extraTimeClicked ? duration + 30 : duration} startTimer={startTimer} keyboardOpen={keyboardOpen} intervalRef={intervalRef} />
       <main className={`${styles.main} ${keyboardOpen && window.innerWidth < 768 ? styles.keyboardOpen : ''}`}>
       <h1 className={styles.title}>
           Öva på att räkna

@@ -19,8 +19,7 @@ export default function Highscore() {
               return b.points - a.points; // Sort by points descending
             }
             return a.wrongAnswers - b.wrongAnswers; // If points are equal, sort by wrongAnswers ascending
-          });
-          console.log("Fetched high scores:", sortedScores);
+          });          
           setHighScoreList(sortedScores.slice(0, 10)); // Get top 10 scores          
         }
       } catch (error) {
