@@ -54,7 +54,7 @@
 }
 
 .timer {
-  position: fixed;
+  position: absolute;
   top: 20px;
   right: 10px;
   font-size: 40px;
