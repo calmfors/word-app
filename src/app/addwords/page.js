@@ -6,6 +6,7 @@ import pageStyles from "../page.module.css";
 import subPagesStyles from "../subpages.module.css";
 import { postData } from "../lib/appwrite";
 import { useTextToSpeech } from "../lib/useTextToSpeech";
+import Header from "../components/Header";
 
 export default function AddWords() {
   const styles = { ...pageStyles, ...subPagesStyles };
@@ -66,9 +67,7 @@ export default function AddWords() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <button className={styles.backButton} onClick={() => window.history.back()}></button>
-      </header>
+      <Header hideSvg={true} />
       <main className={styles.main}>
         <h1 className={styles.title}>
           Lägg till nya engelska glosor

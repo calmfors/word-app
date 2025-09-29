@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import pageStyles from "../page.module.css";
 import subPagesStyles from "../subpages.module.css";
 import { getData } from '../lib/appwrite'; // Uncomment if you need to fetch data
+import Header from '../components/Header';
 
 export default function Highscore() {
   const styles = { ...pageStyles, ...subPagesStyles };
@@ -47,9 +48,7 @@ export default function Highscore() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <button className={styles.backButton} onClick={() => window.history.back()}></button>
-      </header>
+      <Header hideSvg={true} />
       <main className={styles.main}>
         <h1 className={styles.title}>
           Topplista
