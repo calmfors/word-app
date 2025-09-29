@@ -65,10 +65,6 @@
   z-index: 12;
 }
 
-.keyboardOpen .timer {
-  top: 290px;
-}
-
 p.correct,
 p.incorrect {
   font-size: 108px;
