@@ -65,7 +65,7 @@
   z-index: 12;
 }
 
-.keyboardOpen .header {
+.keyboardOpen.header {
   z-index: 20;
 }
 
