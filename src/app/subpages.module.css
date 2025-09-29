@@ -66,9 +66,7 @@
 }
 
 .keyboardOpen .timer {
-  position: absolute;
   top: 290px;
-  z-index: 10;
 }
 
 p.correct,
