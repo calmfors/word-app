@@ -1,12 +1,17 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from "../subpages.module.css";
 import { useRouter } from 'next/navigation';
 
 export default function Header({ timer, setTimer, startTimer, duration, keyboardOpen, intervalRef, hideSvg, goBackToPreviousPage }) {
   const router = useRouter();
-  const params = new URLSearchParams(window.location.search);
-  const returnToPreviousPage = params.get('return') === 'true';
+  const [returnToPreviousPage, setReturnToPreviousPage] = useState(false);
+  
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    setReturnToPreviousPage(params.get('return') === 'true');
+  }, []);
 
   useEffect(() => {
     if (startTimer) countDown();
