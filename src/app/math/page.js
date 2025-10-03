@@ -219,7 +219,7 @@ export default function MathProblems() {
         </div>
           : <p>Laddar...</p>}
         <section className={styles.buttons}>
-          <button className={styles.grey} onClick={() => {!extraTimeClicked && setTimer(timer + 20); setExtraTimeClicked(true);}}>
+          <button className={styles.grey} onClick={() => {!extraTimeClicked && setTimer(timer + 30); setExtraTimeClicked(true);}}>
             Mer tid &bull;
           </button>
           <button className={styles.grey} onClick={resetGame}>
