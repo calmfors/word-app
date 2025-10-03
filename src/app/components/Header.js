@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 export default function Header({ timer, setTimer, startTimer, duration, keyboardOpen, intervalRef, hideSvg, goBackToPreviousPage }) {
   const router = useRouter();
   const [returnToPreviousPage, setReturnToPreviousPage] = useState(false);
+  const [cloud, setCloud] = useState(false);
   
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -14,7 +15,10 @@ export default function Header({ timer, setTimer, startTimer, duration, keyboard
   }, []);
 
   useEffect(() => {
-    if (startTimer) countDown();
+    if (startTimer) {
+      countDown();
+      setCloud(true);
+    }
   }, [startTimer]);
 
   const countDown = () => {
@@ -29,10 +33,12 @@ export default function Header({ timer, setTimer, startTimer, duration, keyboard
     if (timer === 0 && intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
+      setCloud(false);
     }
   }, [timer]);
 
   return (
+    <>
     <header className={`${styles.header} ${keyboardOpen && window.innerWidth < 768 ? styles.keyboardOpen : ''}`}>
       {!hideSvg && <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
         <path fill="#0099ff" d="M0,288L30,266.7C60,245,120,203,180,170.7C240,139,300,117,360,128C420,139,480,181,540,181.3C600,181,660,139,720,128C780,117,840,139,900,165.3C960,192,1020,224,1080,224C1140,224,1200,192,1260,181.3C1320,171,1380,181,1410,186.7L1440,192L1440,0L1410,0C1380,0,1320,0,1260,0C1200,0,1140,0,1080,0C1020,0,960,0,900,0C840,0,780,0,720,0C660,0,600,0,540,0C480,0,420,0,360,0C300,0,240,0,180,0C120,0,60,0,30,0L0,0Z"></path>
@@ -47,5 +53,9 @@ export default function Header({ timer, setTimer, startTimer, duration, keyboard
         </div>}
       </div>
     </header>
+    {cloud && <div className={styles.cloud}>
+      <svg width="425" height="265" version="1.1" viewBox="0 0 112.45 70.115" xmlns="http://www.w3.org/2000/svg"><path d="m18.604 69.763c-7.9562-3.5058-18.253-9.1152-18.253-19.633 0-10.518 9.8283-17.296 18.955-17.062-3.9781-11.686 3.0421-30.384 18.955-32.488 15.912-2.1035 21.061 10.751 23.869 15.893 2.6062-0.95018 9.8708-4.1752 15.934-0.27632 5.951 3.8265 6.8247 10.058 6.7643 13.131 5.3822-0.70117 23.869-1.4023 26.911 15.893 3.0421 17.296-14.274 24.541-14.274 24.541z" fill="#f9f9f9" stroke="#000" strokeWidth=".70358" /></svg>
+    </div>}
+  </>
   );
 }

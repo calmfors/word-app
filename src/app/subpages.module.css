@@ -74,6 +74,20 @@
   top: 290px;
 }
 
+.cloud {
+  position: absolute;
+  top: 150px;
+  left: -100%;
+  right: unset;
+  opacity: 1 !important;
+  animation: moveFromOffScreenLeftToOffScreenRight 30s infinite;
+  animation-delay: 15s;
+  height: min(300px, calc(100vw / 2));
+  width: calc(100% + 20px);
+  min-height: 150px;
+  z-index: 100000;
+}
+
 p.correct,
 p.incorrect {
   font-size: 108px;
@@ -206,6 +220,17 @@ p.incorrect {
 
 .highscoreTable td[data-type="division"] {
   color: #f9a825;
+}
+
+
+@keyframes moveFromOffScreenLeftToOffScreenRight {
+  from {
+    transform: translateX(-150%);
+  }
+
+  to {
+    transform: translateX(250%);
+  }
 }
 
 @keyframes slideInFromBottom {
