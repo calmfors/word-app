@@ -7,16 +7,17 @@ import words from '../../../resources/words.json';
 import { useTextToSpeech } from '../lib/useTextToSpeech';
 import { getData, postData, getWeeks } from '../lib/appwrite';
 import Header from '../components/Header';
+import { useRouter } from 'next/navigation';
 
 export default function TestWords() {
-  const duration = 60; // Duration in seconds
+  const DURATION = 60; // Duration in seconds
   const [randomWords, setRandomWords] = useState([]);
   const [correctIndex, setCorrectIndex] = useState(0);
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [animationKey, setAnimationKey] = useState(0);
   const [numberOfCorrectAnswers, setNumberOfCorrectAnswers] = useState(0);
   const [numberOfWrongAnswers, setNumberOfWrongAnswers] = useState(0);
-  const [timer, setTimer] = useState(duration);
+  const [timer, setTimer] = useState(DURATION);
   const [help, setHelp] = useState(false);
   const [fromLang, setFromLang] = useState('sv-SE');
   const [toLang, setToLang] = useState('en-US');
@@ -33,6 +34,8 @@ export default function TestWords() {
   const [selectedData, setSelectedData] = useState([]);
   const [allData, setAllData] = useState([]);
   const [previousWords, setPreviousWords] = useState([]);
+
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchData() {
@@ -89,7 +92,7 @@ export default function TestWords() {
     setNumberOfWrongAnswers(0);
     getRandomWords();
     setStartTimer(false);
-    setTimer(duration);
+    setTimer(DURATION);
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
@@ -195,11 +198,11 @@ export default function TestWords() {
       console.error('Error fetching stats:', error);
     });
     if (isBest) {
-      setTimer(duration);
+      setTimer(DURATION);
       setEnterName(true);
     } else {
       console.log('Not the best result, no name entry needed');
-      resetGame(false);
+      resetGame();
     }
   }
 
@@ -208,25 +211,25 @@ export default function TestWords() {
     if (!name || name.trim() === '') {
       setEnterName(false);
       setName('');
-      resetGame(true);
+      resetGame();
       return;
     }
     const result = {
       type: selectedType,
       correctAnswers: numberOfCorrectAnswers,
       wrongAnswers: numberOfWrongAnswers,
-      time: duration,
+      time: DURATION,
       points: getPoints(),
       name
     };
+    resetGame();
 
     postData('stats', result)
       .then(() => {
         console.log('Result saved successfully');
         setEnterName(false);
         setName('');
-        //resetGame(true);
-        window.location.href = '/highscore';
+        router.push('/highscore?return=true');
       })
       .catch((error) => {
         console.error('Error saving result:', error);
@@ -240,7 +243,7 @@ export default function TestWords() {
 
   return (
     <div className={styles.page}>
-      <Header timer={timer} setTimer={setTimer} duration={duration} startTimer={startTimer} keyboardOpen={false} intervalRef={intervalRef} />
+      <Header timer={timer} setTimer={setTimer} duration={DURATION} startTimer={startTimer} keyboardOpen={false} intervalRef={intervalRef} />
       <main className={styles.main}>
         <h1 className={styles.title}>Öva engelska glosor</h1>
         <p key={animationKey + 1}>

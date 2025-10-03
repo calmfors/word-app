@@ -4,7 +4,8 @@ import subpagesStyles from '../subpages.module.css';
 import React, { useEffect, useState, useRef } from 'react';
 import { postData, getData } from '../lib/appwrite';
 import Header from '../components/Header';
-const duration = 70;
+import { useRouter } from 'next/navigation';
+const DURATION = 70;
 
 export default function MathProblems() {
   const [selectedType, setSelectedType] = useState('addition'); // Default to addition
@@ -13,7 +14,7 @@ export default function MathProblems() {
   const [problem, setProblem] = useState('');
   const [answer, setAnswer] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState(null);
-  const [timer, setTimer] = useState(duration);
+  const [timer, setTimer] = useState(DURATION);
   const [name, setName] = useState('');
   const [enterName, setEnterName] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
@@ -22,6 +23,8 @@ export default function MathProblems() {
   const inputRef = useRef(null);
   const intervalRef = useRef(null);
   const styles = { ...pageStyles, ...subpagesStyles };
+
+  const router = useRouter();
 
   useEffect(() => {
     console.log('Selected type changed:', selectedType);
@@ -98,13 +101,13 @@ export default function MathProblems() {
       generateDivisionProblem();
     }
     console.log('Generating new problem:', typeChanged);
-    if (inputRef.current && timer !== 0 && timer !== duration && !typeChanged) {
+    if (inputRef.current && timer !== 0 && timer !== DURATION && !typeChanged) {
       inputRef.current.focus();
     }
   }
 
   const resetGame = (typeChanged) => {
-    setTimer(duration);
+    setTimer(DURATION);
     setProblem('');
     setAnswer('');
     setCorrectAnswer(null);
@@ -150,7 +153,7 @@ export default function MathProblems() {
       console.error('Error fetching stats:', error);
     });
     if (isBest) {
-      setTimer(duration);
+      setTimer(DURATION);
       setEnterName(true);
     } else {
       console.log('Not the best result, no name entry needed');
@@ -170,7 +173,7 @@ export default function MathProblems() {
       type: selectedType,
       correctAnswers: numberOfCorrectAnswers,
       wrongAnswers: numberOfWrongAnswers,
-      time: duration + (extraTimeClicked ? 30 : 0),
+      time: DURATION + (extraTimeClicked ? 30 : 0),
       points: getPoints(),
       name
     };
@@ -180,8 +183,8 @@ export default function MathProblems() {
         console.log('Result saved successfully');
         setEnterName(false);
         setName('');
-        //resetGame(true);
-        window.location.href = '/highscore';
+        resetGame(true);
+        router.push('/highscore?return=true');
       })
       .catch((error) => {
         console.error('Error saving result:', error);
@@ -196,7 +199,7 @@ export default function MathProblems() {
 
   return (
     <div className={styles.page}>
-      <Header timer={timer} setTimer={setTimer} duration={extraTimeClicked ? duration + 30 : duration} startTimer={startTimer} keyboardOpen={keyboardOpen} intervalRef={intervalRef} />
+      <Header timer={timer} setTimer={setTimer} duration={extraTimeClicked ? DURATION + 30 : DURATION} startTimer={startTimer} keyboardOpen={keyboardOpen} intervalRef={intervalRef} />
       <main className={`${styles.main} ${keyboardOpen && window.innerWidth < 768 ? styles.keyboardOpen : ''}`}>
       <h1 className={styles.title}>
           Öva på att räkna
