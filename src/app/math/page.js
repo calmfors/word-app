@@ -124,7 +124,6 @@ export default function MathProblems() {
       inputRef.current.blur();
     }
     generateNewProblem(typeChanged);
-
   }
 
   const checkResult = async () => {
