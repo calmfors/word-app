@@ -297,6 +297,12 @@ p.incorrect {
 }
 
 @media (max-width: 768px) {
+  .cloud {
+    top: 250px;
+  }
+  .cloud svg {
+    width: 200px;
+  }
   .highscoreTable {
     font-size: 20px;
   }
