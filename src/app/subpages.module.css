@@ -74,18 +74,57 @@
   top: 290px;
 }
 
-.cloud {
+.cloudContainer {
   position: absolute;
   top: 150px;
-  left: -150%;
+  left: -425px;
+  width: 425px;
+  height: 400px;
+  overflow: hidden;
+  animation: moveFromOffScreenLeftToOffScreenRight 20s linear forwards;
+  z-index: 100;
+  display: flex;
+}
+
+.cloud {
+  position: absolute;
+  top: 0;
+  left: 25px;
   right: unset;
   opacity: 1 !important;
-  animation: moveFromOffScreenLeftToOffScreenRight 30s infinite;
-  animation-delay: 15s;
-  height: min(300px, calc(100vw / 2));
-  width: calc(100% + 20px);
+  width: 350px;
   min-height: 150px;
-  z-index: 100000;
+  z-index: 101;
+  display: flex;
+  align-items: center;
+}
+
+.cloud svg {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12));
+}
+
+.cloud svg path {
+  transition: fill 0.5s;
+}
+
+.cloud.active svg path {
+  fill: #4e4e4e;
+}
+
+.lightning {
+  position: absolute;
+  top: 220px;
+  left: 150px; 
+  height: 160px;
+  width: 76px;
+  min-height: 150px;
+  z-index: 99;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.lightning.active {
+  opacity: 1;
 }
 
 p.correct,
@@ -224,14 +263,16 @@ p.incorrect {
 
 
 @keyframes moveFromOffScreenLeftToOffScreenRight {
-  from {
-    transform: translateX(-150%);
+  0% {
+      left: -425px;
+      /* Off-screen left */
+    }
+  
+    100% {
+      left: 100vw;
+      /* Off-screen right */
+    }
   }
-
-  to {
-    transform: translateX(250%);
-  }
-}
 
 @keyframes slideInFromBottom {
   from {
@@ -297,11 +338,20 @@ p.incorrect {
 }
 
 @media (max-width: 768px) {
-  .cloud {
+  .cloudContainer {
+    animation: moveFromOffScreenLeftToOffScreenRight 10s linear forwards;
     top: 250px;
+    width: 300px;
   }
   .cloud svg {
     width: 200px;
+  }
+  .lightning {
+    top: 150px;
+    left: 100px;
+  }
+  .lightning svg { 
+    width: 45px;
   }
   .highscoreTable {
     font-size: 20px;
