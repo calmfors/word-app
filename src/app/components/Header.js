@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styles from "../subpages.module.css";
 import { useRouter } from 'next/navigation';
 
-export default function Header({ timer, setTimer, startTimer, duration, keyboardOpen, intervalRef, hideSvg, goBackToPreviousPage }) {
+export default function Header({ timer, setTimer, startTimer, duration, keyboardOpen, intervalRef, hideSvg }) {
   const router = useRouter();
   const [returnToPreviousPage, setReturnToPreviousPage] = useState(false);
   const [cloud, setCloud] = useState(false);
