@@ -34,6 +34,7 @@ export default function TestWords() {
   const [selectedData, setSelectedData] = useState([]);
   const [allData, setAllData] = useState([]);
   const [previousWords, setPreviousWords] = useState([]);
+  const [wordClicked, setWordClicked] = useState(false);
 
   const router = useRouter();
 
@@ -88,6 +89,7 @@ export default function TestWords() {
   }, [help]);
 
   const resetGame = () => {
+    setWordClicked(false);
     setNumberOfCorrectAnswers(0);
     setNumberOfWrongAnswers(0);
     getRandomWords();
@@ -111,6 +113,7 @@ export default function TestWords() {
       return getRandomWords(); // Retry if it is
     }
     setCorrectAnswer(null);
+    setWordClicked(false);
     const numberOfWords = allData.length;
     const uniqueIndexes = new Set();
     while (uniqueIndexes.size < 3) {
@@ -134,6 +137,8 @@ export default function TestWords() {
   };
 
   const handleClick = (event) => {
+    if (wordClicked) return;
+    setWordClicked(true);
     const selectedWord = event.target.textContent;
     const correctAnswer = fromLang === 'en-US' ? randomWords[correctIndex]?.swedish : randomWords[correctIndex]?.english;
     if (soundOn) {
@@ -272,7 +277,7 @@ export default function TestWords() {
           </button>
         </section>
         {correctAnswer !== null && (
-          <p onClick={() => { correctAnswer ? getRandomWords() : setCorrectAnswer(null); }} className={correctAnswer ? styles.correct : styles.incorrect}>
+          <p className={correctAnswer ? styles.correct : styles.incorrect}>
             {correctAnswer ? 'Rätt svar!' : 'Fel svar, försök igen'}
           </p>
         )}

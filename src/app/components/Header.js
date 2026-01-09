@@ -61,18 +61,20 @@ export default function Header({ timer, setTimer, startTimer, duration, keyboard
       </header>
       {cloud && <div className={styles.cloudContainer} style={{ animationDelay: `${cloudDelay}s`, top: `${cloudTop}px` }}>
         <div className={styles.cloud + (darkCloud ? ` ${styles.active}` : '')} onClick={() => {
-        console.log("Cloud clicked");
-        document.body.style.backgroundColor = '#bbb'; 
-        setDarkCloud(true);
-        setTimeout(() => setLightning(true), 800);
+          document.body.style.backgroundColor = '#bbb';
+          setDarkCloud(true);
+          const audio = new Audio('/thunder.mp3');
+          audio.play();
+          setTimeout(() => setLightning(true), 800);
           setTimeout(() => {
-            setLightning(false); setDarkCloud(false); document.body.style.backgroundColor = 'unset';  }, 1000);
-      }}>
-        <svg width="425" height="265" version="1.1" viewBox="0 0 112.45 70.115" xmlns="http://www.w3.org/2000/svg"><path d="m18.604 69.763c-7.9562-3.5058-18.253-9.1152-18.253-19.633 0-10.518 9.8283-17.296 18.955-17.062-3.9781-11.686 3.0421-30.384 18.955-32.488 15.912-2.1035 21.061 10.751 23.869 15.893 2.6062-0.95018 9.8708-4.1752 15.934-0.27632 5.951 3.8265 6.8247 10.058 6.7643 13.131 5.3822-0.70117 23.869-1.4023 26.911 15.893 3.0421 17.296-14.274 24.541-14.274 24.541z" fill="#f9f9f9" /></svg>
-      </div>
-      <div className={styles.lightning + (lightning ? ` ${styles.active}` : '')}>
-        <svg width="76" height="160" version="1.1" viewBox="0 0 20.108 42.333" xmlns="http://www.w3.org/2000/svg"><path d="m12.66 42.143-12.205-18.906 10.96-10.199-8.22-12.687h7.9709l8.4691 12.189-14.198 11.443z" fill="#ffd42a" /></svg>
-      </div>
+            setLightning(false); setDarkCloud(false); document.body.style.backgroundColor = 'unset';
+          }, 1000);
+        }}>
+          <svg width="425" height="265" version="1.1" viewBox="0 0 112.45 70.115" xmlns="http://www.w3.org/2000/svg"><path d="m18.604 69.763c-7.9562-3.5058-18.253-9.1152-18.253-19.633 0-10.518 9.8283-17.296 18.955-17.062-3.9781-11.686 3.0421-30.384 18.955-32.488 15.912-2.1035 21.061 10.751 23.869 15.893 2.6062-0.95018 9.8708-4.1752 15.934-0.27632 5.951 3.8265 6.8247 10.058 6.7643 13.131 5.3822-0.70117 23.869-1.4023 26.911 15.893 3.0421 17.296-14.274 24.541-14.274 24.541z" fill="#f9f9f9" /></svg>
+        </div>
+        <div className={styles.lightning + (lightning ? ` ${styles.active}` : '')}>
+          <svg width="76" height="160" version="1.1" viewBox="0 0 20.108 42.333" xmlns="http://www.w3.org/2000/svg"><path d="m12.66 42.143-12.205-18.906 10.96-10.199-8.22-12.687h7.9709l8.4691 12.189-14.198 11.443z" fill="#ffd42a" /></svg>
+        </div>
       </div>}
     </>
   );
