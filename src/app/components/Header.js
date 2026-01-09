@@ -63,9 +63,11 @@ export default function Header({ timer, setTimer, startTimer, duration, keyboard
         <div className={styles.cloud + (darkCloud ? ` ${styles.active}` : '')} onClick={() => {
           document.body.style.backgroundColor = '#bbb';
           setDarkCloud(true);
-          const audio = new Audio('/thunder.mp3');
-          audio.play();
-          setTimeout(() => setLightning(true), 800);
+          setTimeout(() => {
+            setLightning(true)
+            const audio = new Audio('/thunder.mp3');
+            audio.play();
+          }, 500);
           setTimeout(() => {
             setLightning(false); setDarkCloud(false); document.body.style.backgroundColor = 'unset';
           }, 1000);
